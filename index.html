@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar Anfrage - Genusshotel Riegersburg</title>
+    
+    <!-- Standalone stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- JavaScript -->
+    <script src="config.js"></script>
+    <script src="pricelist.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header class="en-header">
+        <div class="en-header__inner">
+            <a class="en-header__logo en-logo" href="https://www.genusshotel-riegersburg.at/">
+                <img class="en-logo__image" src="logo.svg" alt="Genusshotel Riegersburg" />
+            </a>
+            <nav class="en-header__menu">
+                <div class="en-header__menu-inner">
+                    <a href="https://www.genusshotel-riegersburg.at/seminare/" class="en-format-navigation" style="text-decoration: none; margin-left: 2rem;">Seminare</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="en-content">
+        <form class="en-grid en-form" method="post" action="#">
+            <h1 class="en-griditem en-format-h2 en-format-centered" style="grid-column: 1 / -1;">Seminar Anfrage</h1>
+            
+            <!-- Left Column: Form Sections -->
+            <div class="form-column-left">
+                <!-- Basic Information Section -->
+                <div class="form-section form-section--basic">
+                    <h3 class="en-griditem en-format-h5 en-space-large">Seminar-Typ</h3>
+            
+            <div class="en-griditem">
+                <input class="en-replace" type="radio" name="seminar_typ" id="seminar_1tag" value="1tag" required checked>
+                <label class="en-replacement en-replacement--radio en-format-small" for="seminar_1tag">1-Tages-Seminar</label>
+                
+                <input class="en-replace" type="radio" name="seminar_typ" id="seminar_mehrtag" value="mehrtag" required>
+                <label class="en-replacement en-replacement--radio en-format-small" for="seminar_mehrtag">Mehrtägiges Seminar</label>
+            </div>
+            
+            <!-- 1-Tages-Seminar Package Display -->
+            <div id="package_1tag" class="en-griditem en-space-large">
+                <div class="en-format-small" style="padding: 1.5em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
+                    <h4 class="en-format-h5" style="margin-bottom: 1em;">1-Tages-Seminar Paket</h4>
+                    <p style="margin-bottom: 0.5em;"><strong>Leistungen (inkludiert):</strong></p>
+                    <ul style="margin-left: 1.5em; margin-bottom: 1em;">
+                        <li>Empfang / Genusspause pikant & süß gemischt</li>
+                        <li>Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet</li>
+                        <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 class="en-griditem en-format-h5 en-space-large">Personenanzahl</h3>
+            
+            <!-- Tage field - only visible for Mehrtägiges Seminar -->
+            <div id="tage_field_section" class="en-input-cnt en-griditem" data-en-griditem-medium="2" style="display: none;">
+                <label class="en-format-small" for="tage">Anzahl der Tage</label>
+                <input class="en-input" type="number" name="tage" id="tage" min="1" value="1" required>
+            </div>
+            
+            <div class="en-input-cnt en-griditem slider-container" data-en-griditem-medium="2">
+                <label class="en-format-small" for="personenanzahl">Personenanzahl</label>
+                <input type="range" name="personenanzahl_slider" id="personenanzahl_slider" min="4" max="100" value="4" step="1">
+                <div class="slider-value-display" id="personenanzahl_display">4</div>
+                <input type="hidden" name="personenanzahl" id="personenanzahl" value="4">
+            </div>
+            
+            <!-- Room fields - only visible for Mehrtägiges Seminar -->
+            <div id="room_fields_section" class="en-griditem" style="display: none;">
+                <h4 class="en-format-h5" style="margin-bottom: 1em;">Zimmer</h4>
+                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                    <label class="en-format-small" for="zimmer_einzel">Einzelzimmer</label>
+                    <input class="en-input" type="number" name="zimmer_einzel" id="zimmer_einzel" min="0" value="0">
+                </div>
+                
+                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                    <label class="en-format-small" for="zimmer_doppel">Doppelzimmer</label>
+                    <input class="en-input" type="number" name="zimmer_doppel" id="zimmer_doppel" min="0" value="0">
+                </div>
+            </div>
+            
+                    <!-- Room Allocation Display -->
+                    <div class="en-griditem en-space-large" id="room-allocation-display">
+                        <div class="en-format-small" style="padding: 1em; background-color: #dddfd6; border-radius: 0.25rem;">
+                            <strong>Vorgeschlagener Seminarraum:</strong> <span id="room-suggestion">40m² Raum (inkludiert)</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Room Setup Selection -->
+                    <div class="en-griditem en-space-large">
+                        <h4 class="en-format-h5" style="margin-bottom: 1em;">Sitzordnung wählen</h4>
+                        <div class="room-setup-selector">
+                            <div class="room-setup-option">
+                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_block" value="block">
+                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_block">
+                                    <img src="pics/block.svg" alt="Block" class="room-setup-image">
+                                    <span class="room-setup-name">Block</span>
+                                </label>
+                            </div>
+                            
+                            <div class="room-setup-option">
+                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_fisch" value="fisch">
+                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_fisch">
+                                    <img src="pics/fisch.svg" alt="Fisch" class="room-setup-image">
+                                    <span class="room-setup-name">Fisch</span>
+                                </label>
+                            </div>
+                            
+                            <div class="room-setup-option">
+                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_parlament" value="parlament">
+                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_parlament">
+                                    <img src="pics/parlament.svg" alt="Parlament" class="room-setup-image">
+                                    <span class="room-setup-name">Parlament</span>
+                                </label>
+                            </div>
+                            
+                            <div class="room-setup-option">
+                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_sesselkreis" value="sesselkreis">
+                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_sesselkreis">
+                                    <img src="pics/sesselkreis.svg" alt="Sesselkreis" class="room-setup-image">
+                                    <span class="room-setup-name">Sesselkreis</span>
+                                </label>
+                            </div>
+                            
+                            <div class="room-setup-option">
+                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_theater" value="theater">
+                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_theater">
+                                    <img src="pics/theater.svg" alt="Theater" class="room-setup-image">
+                                    <span class="room-setup-name">Theater</span>
+                                </label>
+                            </div>
+                            
+                            <div class="room-setup-option">
+                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_uform" value="u-form">
+                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_uform">
+                                    <img src="pics/u-form.svg" alt="U-Form" class="room-setup-image">
+                                    <span class="room-setup-name">U-Form</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Catering Section - only visible for Mehrtägiges Seminar -->
+                <div id="catering_section" class="form-section form-section--catering" style="display: none;">
+                <h3 class="en-griditem en-format-h5 en-space-large">Catering</h3>
+                
+                <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">1. Pausenverpflegung</h4>
+                
+                <div class="en-griditem" style="margin-bottom: 1.5em;">
+                    <label class="en-format-small" style="display: block; margin-bottom: 0.75em; font-weight: 700;">Vormittags-Pause:</label>
+                    <div style="display: flex; flex-direction: column; gap: 0.5em;">
+                        <div>
+                            <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_gemischt" data-price-key="catering.pause.gemischt" checked>
+                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_gemischt">Genusspause pikant & süß gemischt</label>
+                        </div>
+                        <div>
+                            <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_pikant" data-price-key="catering.pause.pikant">
+                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_pikant">Genusspause pikant</label>
+                        </div>
+                        <div>
+                            <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_suess" data-price-key="catering.pause.suess">
+                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_suess">Genusspause süß</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="en-griditem" style="margin-bottom: 1.5em;">
+                    <label class="en-format-small" style="display: block; margin-bottom: 0.75em; font-weight: 700;">Nachmittags-Pause:</label>
+                    <div style="display: flex; flex-direction: column; gap: 0.5em;">
+                        <div>
+                            <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_gemischt" data-price-key="catering.pause.gemischt" checked>
+                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_gemischt">Genusspause pikant & süß gemischt</label>
+                        </div>
+                        <div>
+                            <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_pikant" data-price-key="catering.pause.pikant">
+                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_pikant">Genusspause pikant</label>
+                        </div>
+                        <div>
+                            <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_suess" data-price-key="catering.pause.suess">
+                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_suess">Genusspause süß</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">2. Mittagessen</h4>
+                
+                <div class="en-griditem">
+                    <label class="en-format-small" for="catering_mittagessen">
+                        <input type="checkbox" name="catering_mittagessen" id="catering_mittagessen" data-price-key="catering.mittagessen.base" checked>
+                        Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet
+                    </label>
+                </div>
+                
+                <div class="en-griditem">
+                    <label class="en-format-small" for="catering_mittagessen_getraenke">
+                        <input type="checkbox" name="catering_mittagessen_getraenke" id="catering_mittagessen_getraenke" data-price-key="catering.mittagessen.getraenke" checked>
+                        Unlimitiert Alkoholfreie Getränke zum Mittagessen
+                    </label>
+                </div>
+                
+                <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">3. Abendessen</h4>
+                
+                <div class="en-griditem">
+                    <div style="display: flex; flex-direction: column; gap: 0.5em;">
+                        <div>
+                            <input class="en-replace" type="radio" name="catering_abendessen" id="catering_abendessen_base" data-price-key="catering.abendessen.base" value="base" checked>
+                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_abendessen_base">Abendessen, 4-Gang-Wahl-Menü plus Salat- und Käse vom Buffet</label>
+                        </div>
+                        <div>
+                            <input class="en-replace" type="radio" name="catering_abendessen" id="catering_abendessen_upgrade" data-price-key="catering.abendessen.upgrade_steak" value="upgrade">
+                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_abendessen_upgrade">Abendessen inkl. Dry-Aged-Steak Hauptgang</label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+                <!-- Equipment & Activities - only visible for Mehrtägiges Seminar -->
+                <div id="equipment_activities_section" class="form-section form-section--equipment" style="display: none;">
+                <h3 class="en-griditem en-format-h5 en-space-large">Technik & Equipment</h3>
+                
+                <div class="en-griditem en-format-small" style="padding: 0.5em 0;">
+                    <strong>Technik:</strong> Beamer, WLAN, Flipcharts inklusive
+                </div>
+                
+                <div class="en-griditem">
+                    <label class="en-format-small" for="equipment_raumgarantie">
+                        <input type="checkbox" name="equipment_raumgarantie" id="equipment_raumgarantie" data-price-key="equipment.raumgarantie">
+                        Bestimmten Raum garantieren
+                    </label>
+                </div>
+                
+                <div class="en-griditem">
+                    <label class="en-format-small" for="equipment_gruppenraum">
+                        <input type="checkbox" name="equipment_gruppenraum" id="equipment_gruppenraum" data-price-key="equipment.gruppenraum_per_day">
+                        Zusätzlicher Gruppenraum benötigt?
+                    </label>
+                </div>
+                
+                <h3 class="en-griditem en-format-h5 en-space-large">Rahmenprogramm</h3>
+            
+            <div class="en-griditem">
+                <label class="en-format-small" for="aktivitaet_yoga">
+                    <input type="checkbox" name="aktivitaet_yoga" id="aktivitaet_yoga" data-price-key="activities.yoga">
+                    Yoga / Pilates
+                </label>
+            </div>
+            
+            <div class="en-griditem">
+                <label class="en-format-small" for="aktivitaet_wein">
+                    <input type="checkbox" name="aktivitaet_wein" id="aktivitaet_wein" data-price-key="activities.wein">
+                    Weinverkostung
+                </label>
+            </div>
+            
+            <div class="en-griditem">
+                <label class="en-format-small" for="aktivitaet_spirituosen">
+                    <input type="checkbox" name="aktivitaet_spirituosen" id="aktivitaet_spirituosen" data-price-key="activities.spirituosen">
+                    Gin/Whiskey/Rum Verkostung
+                </label>
+            </div>
+            
+            <div class="en-griditem">
+                <label class="en-format-small" for="aktivitaet_zotter">
+                    <input type="checkbox" name="aktivitaet_zotter" id="aktivitaet_zotter" data-price-key="activities.zotter">
+                    Führung Zotter Schokoladenmanufaktur
+                </label>
+            </div>
+            
+            <div class="en-griditem">
+                <label class="en-format-small" for="aktivitaet_vulcano">
+                    <input type="checkbox" name="aktivitaet_vulcano" id="aktivitaet_vulcano" data-price-key="activities.vulcano">
+                    Führung Vulcano Schinkenmanufaktur
+                </label>
+            </div>
+            
+            <div class="en-griditem">
+                <label class="en-format-small" for="aktivitaet_ebike">
+                    <input type="checkbox" name="aktivitaet_ebike" id="aktivitaet_ebike" data-price-key="activities.ebike">
+                    E-Bike Tour
+                </label>
+            </div>
+                </div>
+                
+                <!-- Contact Information Section -->
+                <div class="form-section form-section--contact">
+                    <h3 class="en-griditem en-format-h5 en-space-large">Ihre Kontaktdaten</h3>
+            
+            <div class="en-griditem">
+                <input class="en-replace" type="radio" name="anrede" id="anrede_frau" value="Frau" required>
+                <label class="en-replacement en-replacement--radio en-format-small" for="anrede_frau">Frau</label>
+                
+                <input class="en-replace" type="radio" name="anrede" id="anrede_herr" value="Herr" required>
+                <label class="en-replacement en-replacement--radio en-format-small" for="anrede_herr">Herr</label>
+            </div>
+            
+            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                <label class="en-format-small" for="vorname">Vorname *</label>
+                <input class="en-input" type="text" name="vorname" id="vorname" required>
+            </div>
+            
+            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                <label class="en-format-small" for="nachname">Nachname *</label>
+                <input class="en-input" type="text" name="nachname" id="nachname" required>
+            </div>
+            
+            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                <label class="en-format-small" for="email">E-Mail *</label>
+                <input class="en-input" type="email" name="email" id="email" required>
+            </div>
+            
+            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                <label class="en-format-small" for="telefon">Telefon</label>
+                <input class="en-input" type="tel" name="telefon" id="telefon">
+            </div>
+            
+            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                <label class="en-format-small" for="firma">Firma</label>
+                <input class="en-input" type="text" name="firma" id="firma">
+            </div>
+            
+            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                <label class="en-format-small" for="nachricht">Nachricht</label>
+                <textarea class="en-input" name="nachricht" id="nachricht" rows="4"></textarea>
+            </div>
+            
+                    <p class="en-griditem en-format-tiny">* Pflichtfelder</p>
+                    
+                    <div class="en-griditem">
+                        <button type="submit" class="en-button en-button--filled">Anfrage senden</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Price Summary (Sticky) -->
+            <div class="form-column-right">
+                <div id="price-summary-section">
+                    <div class="en-format-small" style="padding: 1.5em; background-color: #f5f5f0; border: 2px solid #e7d0cb; border-radius: 0.5rem;">
+                        <h4 class="en-format-h5" style="margin-bottom: 1em;">Preisvorschlag</h4>
+                        <div id="price-summary-content">
+                            <p>Berechne Preis...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

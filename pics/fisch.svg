@@ -1,0 +1,21 @@
+<svg viewBox="0 0 137 109" fill="none" stroke="#d4a5a5" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left angled tables -->
+  <rect x="8" y="15" width="24" height="12" rx="2" fill="none" transform="rotate(-30 20 21)"/>
+  <rect x="8" y="45" width="24" height="12" rx="2" fill="none" transform="rotate(-30 20 51)"/>
+  <rect x="8" y="75" width="24" height="12" rx="2" fill="none" transform="rotate(-30 20 81)"/>
+  <!-- Right angled tables -->
+  <rect x="70" y="15" width="24" height="12" rx="2" fill="none" transform="rotate(30 82 21)"/>
+  <rect x="70" y="45" width="24" height="12" rx="2" fill="none" transform="rotate(30 82 51)"/>
+  <rect x="70" y="75" width="24" height="12" rx="2" fill="none" transform="rotate(30 82 81)"/>
+  <!-- Chairs around -->
+  <circle cx="45" cy="18" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="55" cy="18" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="45" cy="48" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="55" cy="48" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="45" cy="78" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="55" cy="78" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="20" cy="35" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="80" cy="35" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="20" cy="65" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="80" cy="65" r="6" fill="none" stroke-dasharray="3,2"/>
+</svg>

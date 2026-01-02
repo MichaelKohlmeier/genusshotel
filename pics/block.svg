@@ -1,0 +1,18 @@
+<svg viewBox="0 0 183 112" fill="none" stroke="#d4a5a5" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+  <!-- Center table -->
+  <rect x="30" y="30" width="90" height="40" rx="2" fill="none"/>
+  <!-- Top chairs -->
+  <circle cx="50" cy="20" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="75" cy="20" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="100" cy="20" r="6" fill="none" stroke-dasharray="3,2"/>
+  <!-- Bottom chairs -->
+  <circle cx="50" cy="80" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="75" cy="80" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="100" cy="80" r="6" fill="none" stroke-dasharray="3,2"/>
+  <!-- Left chairs -->
+  <circle cx="20" cy="42" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="20" cy="58" r="6" fill="none" stroke-dasharray="3,2"/>
+  <!-- Right chairs -->
+  <circle cx="130" cy="42" r="6" fill="none" stroke-dasharray="3,2"/>
+  <circle cx="130" cy="58" r="6" fill="none" stroke-dasharray="3,2"/>
+</svg>

@@ -1,0 +1,857 @@
+@charset "UTF-8";
+/*!
+ * Seminar Form Stylesheet
+ * Extracted from Genusshotel Riegersburg WordPress theme
+ * Standalone version for seminar booking form
+ */
+
+/* ============================================
+   FONTS
+   ============================================ */
+
+@font-face {
+    font-family: Avenir;
+    font-weight: 300;
+    src: url("fonts/avenir-book.eot?v=1");
+    src: url("fonts/avenir-book.eot?v=1") format("embedded-opentype"), 
+         url("fonts/avenir-book.woff2?v=1") format("woff2"), 
+         url("fonts/avenir-book.woff?v=1") format("woff"), 
+         url("fonts/avenir-book.ttf?v=1") format("truetype");
+}
+
+@font-face {
+    font-family: Avenir;
+    font-weight: 700;
+    src: url("fonts/avenir-heavy.eot?v=1");
+    src: url("fonts/avenir-heavy.eot?v=1") format("embedded-opentype"), 
+         url("fonts/avenir-heavy.woff2?v=1") format("woff2"), 
+         url("fonts/avenir-heavy.woff?v=1") format("woff"), 
+         url("fonts/avenir-heavy.ttf?v=1") format("truetype");
+}
+
+@font-face {
+    font-family: Bodoni;
+    font-weight: 300;
+    src: url("fonts/bodoni-book.eot?v=1");
+    src: url("fonts/bodoni-book.eot?v=1") format("embedded-opentype"), 
+         url("fonts/bodoni-book.woff2?v=1") format("woff2"), 
+         url("fonts/bodoni-book.woff?v=1") format("woff"), 
+         url("fonts/bodoni-book.ttf?v=1") format("truetype");
+}
+
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: white;
+    color: black;
+}
+
+body {
+    position: relative;
+    min-width: 18.75em;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: Avenir, sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 1.35;
+    letter-spacing: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@media screen and (min-width: 33.75em) {
+    body {
+        font-size: 1.125em;
+    }
+}
+
+@media screen and (min-width: 50em) {
+    body {
+        padding: 3rem 2rem;
+    }
+}
+
+img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    vertical-align: top;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    border-radius: 0;
+    text-align: inherit;
+    background: none;
+    color: inherit;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+/* ============================================
+   GRID SYSTEM
+   ============================================ */
+
+.en-grid {
+    display: block;
+    width: 100%;
+    position: relative;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.en-grid:after {
+    font-size: .1px;
+    line-height: 0;
+    content: ".";
+    display: block;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 0px;
+    flex: 0 1 0px;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.en-griditem {
+    position: relative;
+    border: 0 solid transparent;
+    border-width: .625rem;
+    display: block;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 100%;
+    float: left;
+    vertical-align: top;
+}
+
+.en-griditem.en-grid {
+    -ms-flex-direction: row;
+    flex-direction: row;
+    border-style: none;
+}
+
+/* Default grid widths */
+.en-griditem[data-en-griditem-default^="1"] {
+    width: 100%;
+}
+
+.en-griditem[data-en-griditem-default^="2"] {
+    width: 50%;
+}
+
+.en-griditem[data-en-griditem-default^="3"] {
+    width: 33.333%;
+}
+
+.en-griditem[data-en-griditem-default^="3-2"] {
+    width: 66.667%;
+}
+
+.en-griditem[data-en-griditem-default^="4"] {
+    width: 25%;
+}
+
+.en-griditem[data-en-griditem-default^="4-3"] {
+    width: 75%;
+}
+
+/* Small breakpoint (33.75em / 540px) */
+@media screen and (min-width: 33.75em) {
+    .en-griditem[data-en-griditem-small^="1"] {
+        width: 100%;
+    }
+
+    .en-griditem[data-en-griditem-small^="2"] {
+        width: 50%;
+    }
+
+    .en-griditem[data-en-griditem-small^="3"] {
+        width: 33.333%;
+    }
+
+    .en-griditem[data-en-griditem-small^="3-2"] {
+        width: 66.667%;
+    }
+}
+
+/* Medium breakpoint (50em / 800px) */
+@media screen and (min-width: 50em) {
+    .en-griditem[data-en-griditem-medium^="1"] {
+        width: 100%;
+    }
+
+    .en-griditem[data-en-griditem-medium^="2"] {
+        width: 50%;
+    }
+
+    .en-griditem[data-en-griditem-medium^="3"] {
+        width: 33.333%;
+    }
+
+    .en-griditem[data-en-griditem-medium^="3-2"] {
+        width: 66.667%;
+    }
+
+    .en-griditem[data-en-griditem-medium^="4"] {
+        width: 25%;
+    }
+
+    .en-griditem[data-en-griditem-medium^="4-3"] {
+        width: 75%;
+    }
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+.en-format-h1 {
+    font-family: Bodoni, serif;
+    font-size: 2.5em;
+    line-height: 1.1111;
+    text-transform: uppercase;
+}
+
+.en-format-h2 {
+    font-family: Bodoni, serif;
+    font-size: 2.5em;
+    line-height: 1;
+}
+
+.en-format-h3 {
+    font-family: Bodoni, serif;
+    font-size: 2.3333em;
+    line-height: 1;
+}
+
+.en-format-h4 {
+    font-family: Bodoni, serif;
+    font-size: 1.7778em;
+    line-height: 1;
+}
+
+.en-format-h5 {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .01em;
+}
+
+.en-format-small {
+    font-size: .8889em;
+}
+
+.en-format-tiny {
+    font-size: .875rem;
+}
+
+.en-format-centered {
+    text-align: center;
+}
+
+@media screen and (min-width: 50em) {
+    .en-format-h1 {
+        font-size: 4em;
+    }
+}
+
+/* ============================================
+   SPACING
+   ============================================ */
+
+.en-space-small {
+    margin-top: .5em;
+}
+
+.en-space-medium {
+    margin-top: 1em;
+}
+
+.en-space-large {
+    margin-top: 2em;
+}
+
+/* ============================================
+   CONTENT LAYOUT
+   ============================================ */
+
+.en-content {
+    max-width: 65rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+@media screen and (min-width: 50em) {
+    .en-content {
+        padding: 3rem 2rem;
+    }
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.en-form {
+    /* Form container */
+}
+
+.en-form__status {
+    padding: 1em .75em .75em;
+    background-color: #c8ad9d;
+    background-clip: padding-box;
+    font-weight: 700;
+}
+
+.en-form--error .en-form__status {
+    background-color: #cc8574;
+    color: white;
+}
+
+/* ============================================
+   INPUT STYLES
+   ============================================ */
+
+.en-input-cnt {
+    position: relative;
+}
+
+.en-input,
+.en-select select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 2.5rem;
+    border: 0 solid;
+    border-radius: 0;
+    padding: .5em .75em;
+    background-color: #bdadad;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.en-input.en-is-invalid,
+.en-select select.en-is-invalid {
+    color: #cc8574;
+    -webkit-box-shadow: inset 0 0 0 .125rem;
+    box-shadow: inset 0 0 0 .125rem;
+}
+
+.en-input.en-is-disabled,
+.en-input[disabled],
+.en-select select.en-is-disabled,
+.en-select select[disabled] {
+    opacity: .25;
+    pointer-events: none;
+}
+
+textarea.en-input {
+    height: 11.25em;
+    resize: vertical;
+}
+
+/* ============================================
+   SELECT STYLES
+   ============================================ */
+
+.en-select {
+    display: block;
+    position: relative;
+    background-color: #bdadad;
+}
+
+.en-select select {
+    padding-right: 2.8125rem;
+    text-overflow: ellipsis;
+    background-color: transparent;
+}
+
+.en-select select:focus::-ms-value {
+    background-color: transparent;
+    color: inherit;
+}
+
+.en-select select::-ms-expand {
+    display: none;
+}
+
+.en-select:before {
+    content: "▼";
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: .3125rem;
+    margin-top: -.5em;
+    font-size: 1rem;
+    pointer-events: none;
+    color: inherit;
+}
+
+/* ============================================
+   RADIO & CHECKBOX REPLACEMENT
+   ============================================ */
+
+.en-replace {
+    position: absolute;
+    opacity: 0;
+}
+
+.en-replacement {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 2.25rem;
+    text-indent: -2.25rem;
+    cursor: pointer;
+}
+
+.en-replacement:before {
+    content: "";
+    font-size: 1.75rem;
+    line-height: 1.75rem;
+    margin-right: .5rem;
+    margin-top: -.25rem;
+    background-color: white;
+    -webkit-transition: opacity .25s;
+    transition: opacity .25s;
+}
+
+.en-replacement:active:before {
+    opacity: .5;
+}
+
+.en-replacement--radio:before {
+    border-radius: 99em;
+    border: .125rem solid #bdadad;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: inline-block;
+}
+
+.en-replace:checked + .en-replacement--radio:before {
+    border: .125rem solid #bdadad;
+    -webkit-box-shadow: inset 0 0 0 7px white;
+    box-shadow: inset 0 0 0 7px white;
+    background-color: currentColor;
+    background-clip: content-box;
+}
+
+.en-replace.en-is-invalid + .en-replacement--radio:before {
+    border-color: #cc8574;
+}
+
+.en-replacement + .en-replace + .en-replacement {
+    margin-left: 1em;
+}
+
+/* Simple checkbox styling - using native checkboxes */
+input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    cursor: pointer;
+    accent-color: #bdadad;
+}
+
+input[type="checkbox"]:checked {
+    accent-color: #bdadad;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.en-button {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    border: 1px solid;
+    padding: 1em 1.25em .75em;
+    font-size: .875em;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: .05em;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.en-button:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: currentColor;
+    opacity: 0;
+    -webkit-transition: opacity .2s;
+    transition: opacity .2s;
+    z-index: -1;
+}
+
+.en-button:focus:after,
+.en-button:hover:after {
+    opacity: .15;
+}
+
+.en-button--filled {
+    background-color: #e7d0cb;
+    color: white;
+    border-color: transparent;
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.en-hidden {
+    display: none !important;
+}
+
+/* ============================================
+   HEADER STYLES
+   ============================================ */
+
+.en-header {
+    position: relative;
+    padding: 1.5rem 1rem;
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.en-header__inner {
+    max-width: 95rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.en-header__logo {
+    display: inline-block;
+    vertical-align: middle;
+    width: 7.375rem;
+    max-width: 100%;
+    text-decoration: none;
+}
+
+.en-logo__image {
+    width: 100%;
+    height: auto;
+}
+
+@media screen and (min-width: 50em) {
+    .en-header {
+        padding: 2rem 2rem;
+    }
+    
+    .en-header__logo {
+        width: 9.375rem;
+    }
+}
+
+/* ============================================
+   SLIDER STYLES
+   ============================================ */
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 0.5rem;
+    background: #bdadad;
+    outline: none;
+    margin: 1rem 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #e7d0cb;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #bdadad;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #e7d0cb;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #bdadad;
+}
+
+.slider-container {
+    position: relative;
+}
+
+.slider-value-display {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2em;
+    color: #bdadad;
+    margin-top: 0.5rem;
+}
+
+/* ============================================
+   FORM SECTION GROUPING
+   ============================================ */
+
+.form-section {
+    background-color: #f8f7f5;
+    border: 1px solid #e0ddd8;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    clear: both;
+    overflow: hidden; /* Contain floats */
+    /* Make form-section act as a grid container for its children */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+/* Ensure form-section children work with the grid system */
+.form-section > .en-griditem {
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+.form-section--basic {
+    background-color: #f8f7f5;
+    border-color: #e0ddd8;
+}
+
+.form-section--catering {
+    background-color: #faf9f7;
+    border-color: #e7d0cb;
+}
+
+.form-section--equipment {
+    background-color: #f7f6f4;
+    border-color: #ddd9d4;
+}
+
+.form-section--contact {
+    background-color: #f9f8f6;
+    border-color: #e2dfda;
+}
+
+.form-section > .en-griditem:first-child {
+    margin-top: 0;
+}
+
+.form-section > .en-griditem:last-child {
+    margin-bottom: 0;
+}
+
+.form-section h3,
+.form-section h4 {
+    margin-top: 0;
+    color: #bdadad;
+}
+
+@media screen and (max-width: 50em) {
+    .form-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* ============================================
+   TWO-COLUMN LAYOUT FOR FORM
+   ============================================ */
+
+.form-column-left {
+    width: 100%;
+}
+
+.form-column-right {
+    width: 100%;
+}
+
+/* Override grid for two-column layout on larger screens */
+@media screen and (min-width: 50em) {
+    .en-form {
+        display: grid !important;
+        grid-template-columns: 1fr 350px;
+        gap: 2rem;
+        align-items: start;
+    }
+    
+    .en-form > h1 {
+        grid-column: 1 / -1;
+    }
+    
+    .form-column-left {
+        grid-column: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+    
+    .form-column-right {
+        grid-column: 2;
+        position: sticky;
+        top: 2rem;
+        align-self: start;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+    }
+    
+    #price-summary-section {
+        position: relative;
+    }
+}
+
+@media screen and (max-width: 50em) {
+    .form-column-right {
+        margin-top: 2rem;
+        position: relative;
+    }
+}
+
+/* ============================================
+   ROOM SETUP SELECTOR
+   ============================================ */
+
+.room-setup-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.room-setup-option {
+    position: relative;
+}
+
+.room-setup-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border: 2px solid #e0ddd8;
+    border-radius: 0.5rem;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    min-height: 140px;
+    width: 100%;
+}
+
+.room-setup-label:hover {
+    border-color: #bdadad;
+    background-color: #faf9f7;
+}
+
+.room-setup-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin: 0 auto 0.5rem auto;
+    display: block;
+    flex-shrink: 0;
+}
+
+.room-setup-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #bdadad;
+    margin-top: 0.25rem;
+    text-align: center;
+    width: 100%;
+}
+
+.en-replace:checked + .room-setup-label {
+    border-color: #bdadad;
+    background-color: #f5f5f0;
+    box-shadow: 0 0 0 2px #e7d0cb;
+}
+
+.en-replace:checked + .room-setup-label .room-setup-name {
+    color: #8b7a6b;
+}
+
+/* Hide default radio button, use custom styling */
+.room-setup-option .en-replace {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.room-setup-option .en-replacement--radio:before {
+    display: none; /* Hide default radio styling */
+}
+
+@media screen and (max-width: 50em) {
+    .room-setup-selector {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .room-setup-label {
+        padding: 0.75rem;
+        min-height: 120px;
+    }
+    
+    .room-setup-image {
+        max-width: 80px;
+    }
+}
+
