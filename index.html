@@ -26,6 +26,11 @@
         </div>
     </header>
     
+    <!-- Seminar Background Image -->
+    <div class="seminar-background-image">
+        <img src="pics/seminar_background.jpg" alt="Seminar" />
+    </div>
+    
     <div class="en-content">
         <form class="en-grid en-form" method="post" action="#">
             <h1 class="en-griditem en-format-h2 en-format-centered" style="grid-column: 1 / -1;">Seminar Anfrage</h1>
@@ -44,6 +49,26 @@
                 <label class="en-replacement en-replacement--radio en-format-small" for="seminar_mehrtag">Mehrtägiges Seminar</label>
             </div>
             
+            <!-- Date Selection: Single date for 1-Tages-Seminar -->
+            <div id="date_single_section" class="en-griditem" style="display: block;">
+                <div class="en-input-cnt" data-en-griditem-medium="2">
+                    <label class="en-format-small" for="seminar_datum">Datum</label>
+                    <input class="en-input" type="date" name="seminar_datum" id="seminar_datum" required>
+                </div>
+            </div>
+            
+            <!-- Date Selection: Start and End dates for Mehrtägiges Seminar -->
+            <div id="date_range_section" class="en-griditem" style="display: none;">
+                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                    <label class="en-format-small" for="seminar_start">Von</label>
+                    <input class="en-input" type="date" name="seminar_start" id="seminar_start">
+                </div>
+                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                    <label class="en-format-small" for="seminar_ende">Bis</label>
+                    <input class="en-input" type="date" name="seminar_ende" id="seminar_ende">
+                </div>
+            </div>
+            
             <!-- 1-Tages-Seminar Package Display -->
             <div id="package_1tag" class="en-griditem en-space-large">
                 <div class="en-format-small" style="padding: 1.5em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
@@ -58,12 +83,6 @@
             </div>
             
             <h3 class="en-griditem en-format-h5 en-space-large">Personenanzahl</h3>
-            
-            <!-- Tage field - only visible for Mehrtägiges Seminar -->
-            <div id="tage_field_section" class="en-input-cnt en-griditem" data-en-griditem-medium="2" style="display: none;">
-                <label class="en-format-small" for="tage">Anzahl der Tage</label>
-                <input class="en-input" type="number" name="tage" id="tage" min="1" value="1" required>
-            </div>
             
             <div class="en-input-cnt en-griditem slider-container" data-en-griditem-medium="2">
                 <label class="en-format-small" for="personenanzahl">Personenanzahl</label>
@@ -346,6 +365,22 @@
                         <h4 class="en-format-h5" style="margin-bottom: 1em;">Preisvorschlag</h4>
                         <div id="price-summary-content">
                             <p>Berechne Preis...</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="seminar-kontakt-section" style="margin-top: 2rem; border: 1px solid #000;">
+                    <div class="kontakt-content-wrapper">
+                        <div class="kontakt-image-wrapper">
+                            <img src="pics/bettina_.jpg" alt="Kontakt" />
+                        </div>
+                        <div class="kontakt-text-wrapper">
+                            <h4 class="kontakt-title">KONTAKT</h4>
+                            <p class="kontakt-cta">
+                                &gt;&gt; KONTAKTIEREN SIE UNS! SEHR GERNE SIND WIR IHNEN BEI DER INDIVIDUELLEN PLANUNG BEHILFLICH! &lt;&lt;
+                            </p>
+                            <p class="kontakt-details">
+                                Telefonisch unter +43 3153 20020 oder per Mail an <a href="mailto:rezeption@genusshotel-riegersburg.at">rezeption@genusshotel-riegersburg.at</a>
+                            </p>
                         </div>
                     </div>
                 </div>

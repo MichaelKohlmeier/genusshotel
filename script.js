@@ -10,7 +10,11 @@
     const seminarTyp1Tag = document.getElementById('seminar_1tag');
     const seminarTypMehrtag = document.getElementById('seminar_mehrtag');
     const package1Tag = document.getElementById('package_1tag');
-    const tageFieldSection = document.getElementById('tage_field_section');
+    const dateSingleSection = document.getElementById('date_single_section');
+    const dateRangeSection = document.getElementById('date_range_section');
+    const seminarDatumInput = document.getElementById('seminar_datum');
+    const seminarStartInput = document.getElementById('seminar_start');
+    const seminarEndeInput = document.getElementById('seminar_ende');
     const roomFieldsSection = document.getElementById('room_fields_section');
     const cateringSection = document.getElementById('catering_section');
     const equipmentActivitiesSection = document.getElementById('equipment_activities_section');
@@ -18,7 +22,6 @@
     const personenanzahlInput = document.getElementById('personenanzahl');
     const personenanzahlSlider = document.getElementById('personenanzahl_slider');
     const personenanzahlDisplay = document.getElementById('personenanzahl_display');
-    const tageInput = document.getElementById('tage');
     const roomSuggestionSpan = document.getElementById('room-suggestion');
     const cateringAbendessenBase = document.getElementById('catering_abendessen_base');
     const cateringAbendessenUpgrade = document.getElementById('catering_abendessen_upgrade');
@@ -64,6 +67,52 @@
      */
 
     /**
+     * Calculate number of days from start and end dates (inclusive)
+     * Returns 1 if dates are invalid or missing
+     */
+    function calculateDaysFromDates() {
+        const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
+        
+        // For 1-Tages-Seminar, always return 1 day
+        if (is1Tag) {
+            return 1;
+        }
+        
+        // For Mehrtägiges Seminar, calculate from date range
+        if (!seminarStartInput || !seminarEndeInput) {
+            return 1;
+        }
+        
+        const startDateStr = seminarStartInput.value;
+        const endDateStr = seminarEndeInput.value;
+        
+        // If either date is missing, return 1 as default
+        if (!startDateStr || !endDateStr) {
+            return 1;
+        }
+        
+        const startDate = new Date(startDateStr);
+        const endDate = new Date(endDateStr);
+        
+        // Validate dates
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            return 1;
+        }
+        
+        // If end date is before start date, return 1
+        if (endDate < startDate) {
+            return 1;
+        }
+        
+        // Calculate difference in days (inclusive, so add 1)
+        const timeDiff = endDate.getTime() - startDate.getTime();
+        const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+        
+        // Return at least 1 day
+        return Math.max(1, daysDiff);
+    }
+
+    /**
      * Calculate total price based on selected items using dynamic pricelist
      */
     function calculateTotalPrice() {
@@ -82,7 +131,7 @@
 
         // Mehrtägiges Seminar: Calculate based on selections
         let total = 0;
-        const tage = parseInt(tageInput?.value) || 1;
+        const tage = calculateDaysFromDates();
 
         // Get catering radio buttons (vormittag, nachmittag)
         const cateringVormittag = document.querySelector('input[name="catering_vormittag"]:checked');
@@ -218,11 +267,21 @@
             package1Tag.style.display = is1Tag ? 'block' : 'none';
         }
 
-        // Show/hide Tage field (only for Mehrtägiges)
-        if (tageFieldSection) {
-            tageFieldSection.style.display = isMehrtag ? 'block' : 'none';
-            if (tageInput) {
-                tageInput.required = isMehrtag;
+        // Show/hide date inputs based on seminar type
+        if (dateSingleSection) {
+            dateSingleSection.style.display = is1Tag ? 'block' : 'none';
+            if (seminarDatumInput) {
+                seminarDatumInput.required = is1Tag;
+            }
+        }
+        
+        if (dateRangeSection) {
+            dateRangeSection.style.display = isMehrtag ? 'block' : 'none';
+            if (seminarStartInput) {
+                seminarStartInput.required = isMehrtag;
+            }
+            if (seminarEndeInput) {
+                seminarEndeInput.required = isMehrtag;
             }
         }
 
@@ -329,10 +388,21 @@
             radio.addEventListener('change', updatePriceDisplay);
         });
 
-        // Tage input for Gruppenraum calculation
-        if (tageInput) {
-            tageInput.addEventListener('input', updatePriceDisplay);
-            tageInput.addEventListener('change', updatePriceDisplay);
+        // Date inputs for price calculation
+        if (seminarDatumInput) {
+            seminarDatumInput.addEventListener('change', updatePriceDisplay);
+        }
+        if (seminarStartInput) {
+            seminarStartInput.addEventListener('change', function() {
+                // Set minimum date for end date to be same as start date
+                if (seminarEndeInput && seminarStartInput.value) {
+                    seminarEndeInput.min = seminarStartInput.value;
+                }
+                updatePriceDisplay();
+            });
+        }
+        if (seminarEndeInput) {
+            seminarEndeInput.addEventListener('change', updatePriceDisplay);
         }
 
         // Room inputs for price calculation

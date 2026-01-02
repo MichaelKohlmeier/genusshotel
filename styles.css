@@ -705,6 +705,112 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* ============================================
+   SEMINAR BACKGROUND IMAGE
+   ============================================ */
+
+.seminar-background-image {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f5f5f0;
+    max-height: 300px;
+}
+
+.seminar-background-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 300px;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ============================================
+   CONTACT SECTION
+   ============================================ */
+
+#seminar-kontakt-section {
+    background-color: #fff;
+}
+
+.kontakt-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.kontakt-image-wrapper {
+    flex: 0 0 40%;
+    min-height: 300px;
+    overflow: hidden;
+}
+
+.kontakt-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.kontakt-text-wrapper {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.kontakt-title {
+    font-family: Bodoni, serif;
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #000;
+    padding-bottom: 0.5em;
+    font-weight: normal;
+}
+
+.kontakt-cta {
+    font-family: Bodoni, serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    text-align: center;
+    margin: 1em 0;
+    line-height: 1.4;
+}
+
+.kontakt-details {
+    font-family: Avenir, sans-serif;
+    font-size: 0.9em;
+    text-align: center;
+    margin-top: 1em;
+    line-height: 1.6;
+}
+
+.kontakt-details a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.kontakt-details a:hover {
+    text-decoration: none;
+}
+
+@media screen and (max-width: 50em) {
+    .kontakt-content-wrapper {
+        flex-direction: column;
+    }
+    
+    .kontakt-image-wrapper {
+        width: 100%;
+        min-height: 250px;
+        flex: none;
+    }
+}
+
+/* ============================================
    TWO-COLUMN LAYOUT FOR FORM
    ============================================ */
 
