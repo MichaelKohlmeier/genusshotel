@@ -165,8 +165,33 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Equipment Section -->
+                    <div class="equipment-section">
+                      <h2>Was sollen wir für euch vorbereiten?</h2>
+                      <p style="font-size: 14px; color: #666; margin-bottom: 12px;">Fix vorhanden: WLAN, Beamer, Leinwand</p>
+                      <div class="equipment-list">
+                        <span class="equipment-item">Flipcharts (inkl. Papier und Stifte)</span>
+                        <input type="number" class="equipment-input" name="equipment_flipcharts" value="2" min="0">
+
+                        <span class="equipment-item">Magnetwände</span>
+                        <input type="number" class="equipment-input" name="equipment_magnetwaende" value="1" min="0">
+
+                        <span class="equipment-item">Pinnwand</span>
+                        <input type="number" class="equipment-input" name="equipment_pinnwand" value="5" min="0">
+
+                        <span class="equipment-item">Moderationskoffer</span>
+                        <input type="number" class="equipment-input" name="equipment_moderationskoffer" value="" min="0" placeholder="-">
+
+                        <span class="equipment-item">Kugeschreiber & Blöcke</span>
+                        <input type="number" class="equipment-input" name="equipment_kugelschreiber" value="19" min="0">
+
+                        <span class="equipment-item">Was noch?</span>
+                        <input type="text" class="equipment-input" name="equipment_sonstiges" placeholder="Hier eintragen">
+                      </div>
+                    </div>
                 </div>
-            
+
                 <!-- Catering Section - only visible for Mehrtägiges Seminar -->
                 <div id="catering_section" class="form-section form-section--catering" style="display: none;">
                 <h3 class="en-griditem en-format-h5 en-space-large">Catering</h3>
@@ -241,28 +266,8 @@
                 </div>
                 </div>
                 
-                <!-- Equipment & Activities - only visible for Mehrtägiges Seminar -->
+                <!-- Activities - only visible for Mehrtägiges Seminar -->
                 <div id="equipment_activities_section" class="form-section form-section--equipment" style="display: none;">
-                <h3 class="en-griditem en-format-h5 en-space-large">Technik & Equipment</h3>
-                
-                <div class="en-griditem en-format-small" style="padding: 0.5em 0;">
-                    <strong>Technik:</strong> Beamer, WLAN, Flipcharts inklusive
-                </div>
-                
-                <div class="en-griditem">
-                    <label class="en-format-small" for="equipment_raumgarantie">
-                        <input type="checkbox" name="equipment_raumgarantie" id="equipment_raumgarantie" data-price-key="equipment.raumgarantie">
-                        Bestimmten Raum garantieren
-                    </label>
-                </div>
-                
-                <div class="en-griditem">
-                    <label class="en-format-small" for="equipment_gruppenraum">
-                        <input type="checkbox" name="equipment_gruppenraum" id="equipment_gruppenraum" data-price-key="equipment.gruppenraum_per_day">
-                        Zusätzlicher Gruppenraum benötigt?
-                    </label>
-                </div>
-                
                 <h3 class="en-griditem en-format-h5 en-space-large">Rahmenprogramm</h3>
             
             <div class="en-griditem">
