@@ -1,137 +1,121 @@
-# Pricelist Maintenance Guide
+# Preislisten-Wartung
 
-This guide explains how hotel managers can update prices for the seminar booking form.
+## Google Sheet Struktur
 
-## Overview
+Das Google Sheet muss folgende Spalten haben:
 
-Prices are stored in a Google Sheet and automatically loaded by the form. You can update prices directly in the Google Sheet without needing technical knowledge.
+| Spalte | Name | Beschreibung | Beispiel |
+|--------|------|--------------|----------|
+| A | category | Kategorie | `catering`, `rooms`, `equipment`, `activities` |
+| B | key | Schlüssel | `pause_gemischt`, `single_per_night` |
+| C | label | Beschreibung | `Genusspause pikant & süß gemischt` |
+| D | price | Preis (Zahl) | `14` |
+| E | unit | Einheit (optional) | `pro Person`, `pauschal` |
 
-## Option 1: Google Sheets with Apps Script (Recommended)
+## Kategorien und Schlüssel
 
-### Initial Setup (One-time, done by developer)
+### 1tag (1-Tages-Seminar)
+| Schlüssel | Beschreibung | Preis |
+|-----------|--------------|-------|
+| `base_price` | Basis-Pauschale | € 77,00 pro Person |
 
-1. **Create Google Sheet**
-   - Create a new Google Sheet
-   - Name it "Seminar Pricelist" or similar
-   - Share it with hotel managers (edit access)
+### catering (Verpflegung)
+| Schlüssel | Beschreibung | Preis |
+|-----------|--------------|-------|
+| `saftbar` | Saftbar, Mineralwasser, Kaffee/Tee, Obstkorb | € 26,00 pro Person/Tag |
+| `pause_gemischt` | Genusspause pikant & süß gemischt | € 14,00 pro Person |
+| `pause_pikant` | Genusspause pikant | € 12,00 pro Person |
+| `pause_suess` | Genusspause süß | € 8,00 pro Person |
+| `mittagessen_base` | Mittagessen 3-Gang-Wahl-Menü plus Salatbuffet | € 34,00 pro Person |
+| `mittagessen_getraenke` | Alkoholfreie Getränke zum Mittagessen | € 5,00 pro Person |
+| `abendessen_base` | Abendessen 4-Gang-Wahl-Menü plus Salat- und Käse vom Buffet | € 52,00 pro Person |
+| `abendessen_steak` | Abendessen mit DRY AGED Starzenberger Steak | € 45,00 pro Person |
 
-2. **Set up Sheet Structure**
-   - Option A (Simple): Two columns
-     - Column A: Key path (e.g., `1tag.base_price`, `catering.pause.gemischt`)
-     - Column B: Price value (e.g., `74.00`, `14.00`)
-   - Option B: Structured layout matching the JSON structure
+### rooms (Zimmer)
+| Schlüssel | Beschreibung | Preis |
+|-----------|--------------|-------|
+| `single_per_night` | Einzelzimmer | € 125,00 pro Nacht |
+| `double_per_person` | Doppelzimmer | € 95,00 pro Person/Nacht |
+| `naechtigungsabgabe` | Nächtigungsabgabe | € 2,50 pro Person/Nacht |
 
-3. **Deploy Apps Script**
-   - Open the sheet
-   - Go to Extensions > Apps Script
-   - Copy the code from `apps-script-template.js`
-   - Paste it into the Apps Script editor
-   - Update the sheet name in the script if different from "Sheet1"
-   - Save the script
-   - Click Deploy > New deployment
-   - Type: Web app
-   - Execute as: Me
-   - Who has access: Anyone (or your domain)
-   - Click Deploy
-   - Copy the web app URL
-   - Send the URL to the developer to add to `pricelist.js`
+### equipment (Ausstattung)
+| Schlüssel | Beschreibung | Preis |
+|-----------|--------------|-------|
+| `raumgarantie` | Raumgarantie | € 200,00 pauschal |
+| `gruppenraum` | Gruppenraum | € 100,00 pro Tag |
+| `flipchart` | Flipchart | € 10,00 pro Stück/Tag |
+| `pinnwand` | Pinnwand | € 10,00 pro Stück/Tag |
+| `displayboard` | Displayboard & Hybrid-Technologie | € 85,00 pro Tag |
+| `funkmikrofon` | Funkmikrofon | € 30,00 pro Tag |
+| `presenter` | Presenter | € 9,00 pro Tag |
+| `laptop` | Laptop | € 30,00 pro Tag |
 
-### Updating Prices (Hotel Managers)
+### activities (Aktivitäten)
+| Schlüssel | Beschreibung | Preis | Berechnung |
+|-----------|--------------|-------|------------|
+| `yoga` | Yoga / Pilates | € 220,00 | pauschal |
+| `ebike` | E-Bikes | € 35,00 | pro Person |
+| `wein` | Weinverkostung | € 35,00 | pro Person |
+| `spirituosen` | D/G house of whiskey, gin & rum | € 14,70 | pro Person |
+| `goelles` | Manufaktur Gölles | € 14,50 | pro Person |
+| `zotter` | Zotter Schokoladenmanufaktur | € 21,90 | pro Person |
+| `vulcano` | Vulcano Schinkenwelt | € 18,00 | pro Person |
+| `riegersburg` | Burg Riegersburg | € 8,50 | pro Person |
 
-1. Open the Google Sheet
-2. Find the price you want to change in Column A (key path)
-3. Update the value in Column B
-4. Save the sheet
-5. Changes are immediately available (may take a few seconds to refresh)
+## Mehrwertsteuer (Österreich)
 
-### Example Sheet Layout
+Die Preise werden als **Brutto** eingegeben. Die MwSt-Berechnung erfolgt automatisch:
 
-| Key Path | Price |
-|----------|-------|
-| 1tag.base_price | 74.00 |
-| catering.pause.gemischt | 14.00 |
-| catering.pause.pikant | 12.00 |
-| catering.pause.suess | 8.00 |
-| catering.mittagessen.base | 34.00 |
-| catering.mittagessen.getraenke | 5.00 |
-| catering.abendessen.base | 52.00 |
-| catering.abendessen.upgrade_steak | 87.00 |
-| rooms.per_night | 151.00 |
-| rooms.naechtigungsabgabe | 2.50 |
-| equipment.raumgarantie | 200.00 |
-| equipment.gruppenraum_per_day | 100.00 |
-| activities.yoga | 0 |
-| activities.wein | 0 |
-| activities.spirituosen | 0 |
-| activities.zotter | 0 |
-| activities.vulcano | 0 |
-| activities.ebike | 0 |
+| Kategorie | MwSt-Satz |
+|-----------|-----------|
+| Zimmer (rooms) | 10% |
+| Verpflegung (catering) | 10% |
+| Ausstattung (equipment) | 20% |
+| Aktivitäten (activities) | 20% |
+| Nächtigungsabgabe | keine MwSt (lokale Abgabe) |
 
-## Option 2: Local JSON File (Fallback)
+## Google Apps Script einrichten
 
-If Google Sheets is not available, prices can be updated in the `prices.json` file:
+1. Öffnen Sie das Google Sheet
+2. Gehen Sie zu **Erweiterungen > Apps Script**
+3. Kopieren Sie den Code aus `apps-script-template.js`
+4. Speichern Sie das Script (Ctrl+S)
+5. Klicken Sie auf **Bereitstellen > Neue Bereitstellung**
+6. Wählen Sie **Typ: Web-App**
+7. **Ausführen als:** Ich
+8. **Zugriff:** Jeder
+9. Klicken Sie auf **Bereitstellen**
+10. Kopieren Sie die URL und fügen Sie sie in `config.js` ein
 
-1. Open `prices.json` in a text editor
-2. Find the price you want to change
-3. Update the number value
-4. Save the file
-5. Upload the updated file to the server
+## Preise aktualisieren (für Hotel-Mitarbeiter)
 
-**Note:** This requires file access to the server, which may not be available to hotel managers.
+1. Öffnen Sie das Google Sheet
+2. Finden Sie die Zeile mit dem gewünschten Preis
+3. Ändern Sie den Wert in Spalte D (price)
+4. Speichern Sie das Sheet
+5. Änderungen sind sofort verfügbar (evtl. Browser-Cache leeren)
 
-## Price Key Reference
+## Lokale Fallback-Datei
 
-### 1-Tages Seminar
-- `1tag.base_price` - Base price per person (€74.00)
+Falls das Google Sheet nicht erreichbar ist, wird `prices.json` verwendet.
+Diese Datei sollte bei Preisänderungen ebenfalls aktualisiert werden.
 
-### Catering - Pausenverpflegung
-- `catering.pause.gemischt` - Genusspause pikant & süß gemischt (€14.00)
-- `catering.pause.pikant` - Genusspause pikant (€12.00)
-- `catering.pause.suess` - Genusspause süß (€8.00)
+## Cache leeren
 
-### Catering - Mittagessen
-- `catering.mittagessen.base` - Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet (€34.00)
-- `catering.mittagessen.getraenke` - Alkoholfreies Tischbuffet zum Mittagessen (€5.00)
+Preise werden im Browser gecacht. Um neue Preise zu laden:
+- **Ctrl+Shift+R** (Windows) oder **Cmd+Shift+R** (Mac)
+- Oder: Browser-Cache manuell leeren
 
-### Catering - Abendessen
-- `catering.abendessen.base` - Abendessen, 4-Gang-Wahl-Menü plus Salat- und Käse vom Buffet (€52.00)
-- `catering.abendessen.upgrade_steak` - Abendessen inkl. Dry-Aged-Steak Hauptgang (€87.00)
+## Fehlerbehebung
 
-### Rooms
-- `rooms.per_night` - Nächtigung inkl. Genießerfrühstück, Saftbar, etc. (€151.00)
-- `rooms.naechtigungsabgabe` - Nächtigungsabgabe per person per night (€2.50)
+### Preise werden nicht aktualisiert
+- Google Sheet gespeichert?
+- Einige Sekunden warten
+- Browser-Cache leeren (Ctrl+Shift+R)
+- Browser-Konsole auf Fehler prüfen (F12)
 
-### Equipment
-- `equipment.raumgarantie` - Bestimmten Raum garantieren (€200.00)
-- `equipment.gruppenraum_per_day` - Zusätzlicher Gruppenraum pro Tag (€100.00)
-
-### Activities
-- `activities.yoga` - Yoga / Pilates (€0.00 - to be updated)
-- `activities.wein` - Weinverkostung (€0.00 - to be updated)
-- `activities.spirituosen` - Gin/Whiskey/Rum Verkostung (€0.00 - to be updated)
-- `activities.zotter` - Führung Zotter Schokoladenmanufaktur (€0.00 - to be updated)
-- `activities.vulcano` - Führung Vulcano Schinkenmanufaktur (€0.00 - to be updated)
-- `activities.ebike` - E-Bike Tour (€0.00 - to be updated)
-
-## Troubleshooting
-
-### Prices not updating
-- Check that the Google Sheet is saved
-- Wait a few seconds for the cache to refresh
-- Clear browser cache if needed
-- Check browser console for errors
-
-### Apps Script not working
-- Verify the script is deployed as a web app
-- Check that "Execute as" is set to "Me"
-- Verify the web app URL is correct in `pricelist.js`
-- Check Apps Script execution logs for errors
-
-### Fallback to local file
-- If Apps Script fails, the form will automatically use `prices.json`
-- This ensures the form always works even if Google Sheets is unavailable
-
-## Support
-
-For technical issues or questions about price structure, contact the development team.
-
+### Apps Script funktioniert nicht
+- Script als Web-App bereitgestellt?
+- "Ausführen als" auf "Ich" gesetzt?
+- URL in `config.js` korrekt?
+- Apps Script Ausführungsprotokoll prüfen

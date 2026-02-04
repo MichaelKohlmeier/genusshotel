@@ -206,38 +206,42 @@
     function getDefaultPrices() {
         return {
             "1tag": {
-                "base_price": 74.00
+                "base_price": 77.00
             },
             "catering": {
-                "pause": {
-                    "gemischt": 14.00,
-                    "pikant": 12.00,
-                    "suess": 8.00
-                },
-                "mittagessen": {
-                    "base": 34.00,
-                    "getraenke": 5.00
-                },
-                "abendessen": {
-                    "base": 52.00,
-                    "upgrade_steak": 87.00
-                }
+                "saftbar": 26.00,
+                "pause_gemischt": 14.00,
+                "pause_pikant": 12.00,
+                "pause_suess": 8.00,
+                "mittagessen_base": 34.00,
+                "mittagessen_getraenke": 5.00,
+                "abendessen_base": 52.00,
+                "abendessen_steak": 45.00
             },
             "rooms": {
-                "per_night": 151.00,
+                "single_per_night": 125.00,
+                "double_per_person": 95.00,
                 "naechtigungsabgabe": 2.50
             },
             "equipment": {
                 "raumgarantie": 200.00,
-                "gruppenraum_per_day": 100.00
+                "gruppenraum": 100.00,
+                "flipchart": 10.00,
+                "pinnwand": 10.00,
+                "displayboard": 85.00,
+                "funkmikrofon": 30.00,
+                "presenter": 9.00,
+                "laptop": 30.00
             },
             "activities": {
-                "yoga": 0,
-                "wein": 0,
-                "spirituosen": 0,
-                "zotter": 0,
-                "vulcano": 0,
-                "ebike": 0
+                "yoga": 220.00,
+                "ebike": 35.00,
+                "wein": 35.00,
+                "spirituosen": 14.70,
+                "goelles": 14.50,
+                "zotter": 21.90,
+                "vulcano": 18.00,
+                "riegersburg": 8.50
             }
         };
     }
