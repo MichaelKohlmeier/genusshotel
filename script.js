@@ -16,8 +16,6 @@
     const seminarStartInput = document.getElementById('seminar_start');
     const seminarEndeInput = document.getElementById('seminar_ende');
     const roomFieldsSection = document.getElementById('room_fields_section');
-    const cateringSection = document.getElementById('catering_section');
-    const equipmentActivitiesSection = document.getElementById('equipment_activities_section');
     const roomAllocationDisplay = document.getElementById('room-allocation-display');
     const personenanzahlInput = document.getElementById('personenanzahl');
     const personenanzahlSlider = document.getElementById('personenanzahl_slider');
@@ -26,6 +24,47 @@
     const cateringAbendessenBase = document.getElementById('catering_abendessen_base');
     const cateringAbendessenUpgrade = document.getElementById('catering_abendessen_upgrade');
     const equipmentGruppenraum = document.getElementById('equipment_gruppenraum');
+
+    // Tab Elements
+    const tabBtnVerpflegung = document.getElementById('tab-btn-verpflegung');
+    const tabBtnRahmenprogramm = document.getElementById('tab-btn-rahmenprogramm');
+
+    /**
+     * Switch to a specific tab
+     */
+    function switchTab(tabId) {
+        // Remove active class from all buttons and contents
+        document.querySelectorAll('.tab-button').forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-content').forEach(function(content) {
+            content.classList.remove('active');
+        });
+
+        // Add active class to selected button and content
+        const selectedButton = document.querySelector('.tab-button[data-tab="' + tabId + '"]');
+        const selectedContent = document.getElementById(tabId);
+
+        if (selectedButton) {
+            selectedButton.classList.add('active');
+        }
+        if (selectedContent) {
+            selectedContent.classList.add('active');
+        }
+    }
+
+    /**
+     * Initialize tab navigation
+     */
+    function initTabs() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                switchTab(tabId);
+            });
+        });
+    }
 
     /**
      * Calculate and display room allocation based on participant count
@@ -444,7 +483,7 @@
     }
 
     /**
-     * Handle seminar type selection - show/hide sections
+     * Handle seminar type selection - show/hide sections and tabs
      */
     function handleSeminarTypeChange() {
         const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
@@ -462,7 +501,7 @@
                 seminarDatumInput.required = is1Tag;
             }
         }
-        
+
         if (dateRangeSection) {
             dateRangeSection.style.display = isMehrtag ? 'block' : 'none';
             if (seminarStartInput) {
@@ -478,19 +517,25 @@
             roomFieldsSection.style.display = isMehrtag ? 'block' : 'none';
         }
 
-        // Show/hide catering section (only for Mehrtägiges)
-        if (cateringSection) {
-            cateringSection.style.display = isMehrtag ? 'block' : 'none';
-        }
-
-        // Show/hide equipment & activities (only for Mehrtägiges)
-        if (equipmentActivitiesSection) {
-            equipmentActivitiesSection.style.display = isMehrtag ? 'block' : 'none';
-        }
-
         // Show/hide room allocation display (only for Mehrtägiges)
         if (roomAllocationDisplay) {
             roomAllocationDisplay.style.display = isMehrtag ? 'block' : 'none';
+        }
+
+        // Show/hide tab buttons for Verpflegung and Rahmenprogramm (only for Mehrtägiges)
+        if (tabBtnVerpflegung) {
+            tabBtnVerpflegung.style.display = isMehrtag ? 'inline-block' : 'none';
+        }
+        if (tabBtnRahmenprogramm) {
+            tabBtnRahmenprogramm.style.display = isMehrtag ? 'inline-block' : 'none';
+        }
+
+        // If switching to 1-Tag and currently on a hidden tab, switch to first tab
+        if (is1Tag) {
+            const activeTab = document.querySelector('.tab-content.active');
+            if (activeTab && (activeTab.id === 'tab-verpflegung' || activeTab.id === 'tab-rahmenprogramm')) {
+                switchTab('tab-seminar');
+            }
         }
 
         // Show/hide price summary (always show, but content differs)
@@ -542,6 +587,9 @@
      * Initialize form after pricelist is loaded
      */
     function initializeForm() {
+        // Initialize tab navigation
+        initTabs();
+
         // Seminar type change handlers
         if (seminarTyp1Tag) {
             seminarTyp1Tag.addEventListener('change', handleSeminarTypeChange);

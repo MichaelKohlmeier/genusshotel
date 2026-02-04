@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seminar Anfrage - Genusshotel Riegersburg</title>
-    
+
     <!-- Standalone stylesheet -->
     <link rel="stylesheet" href="styles.css">
     <!-- JavaScript -->
@@ -25,371 +25,396 @@
             </nav>
         </div>
     </header>
-    
+
     <!-- Seminar Background Image -->
     <div class="seminar-background-image">
         <img src="pics/seminar_background.jpg" alt="Seminar" />
     </div>
-    
+
     <div class="en-content">
         <form class="en-grid en-form" method="post" action="#">
             <h1 class="en-griditem en-format-h2 en-format-centered" style="grid-column: 1 / -1;">Seminar Anfrage</h1>
-            
+
             <!-- Left Column: Form Sections -->
             <div class="form-column-left">
-                <!-- Basic Information Section -->
-                <div class="form-section form-section--basic">
-                    <h3 class="en-griditem en-format-h5 en-space-large">Seminar-Typ</h3>
-            
-            <div class="en-griditem">
-                <input class="en-replace" type="radio" name="seminar_typ" id="seminar_1tag" value="1tag" required checked>
-                <label class="en-replacement en-replacement--radio en-format-small" for="seminar_1tag">1-Tages-Seminar</label>
-                
-                <input class="en-replace" type="radio" name="seminar_typ" id="seminar_mehrtag" value="mehrtag" required>
-                <label class="en-replacement en-replacement--radio en-format-small" for="seminar_mehrtag">Mehrtägiges Seminar</label>
-            </div>
-            
-            <!-- Date Selection: Single date for 1-Tages-Seminar -->
-            <div id="date_single_section" class="en-griditem" style="display: block;">
-                <div class="en-input-cnt" data-en-griditem-medium="2">
-                    <label class="en-format-small" for="seminar_datum">Datum</label>
-                    <input class="en-input" type="date" name="seminar_datum" id="seminar_datum" required>
-                </div>
-            </div>
-            
-            <!-- Date Selection: Start and End dates for Mehrtägiges Seminar -->
-            <div id="date_range_section" class="en-griditem" style="display: none;">
-                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                    <label class="en-format-small" for="seminar_start">Von</label>
-                    <input class="en-input" type="date" name="seminar_start" id="seminar_start">
-                </div>
-                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                    <label class="en-format-small" for="seminar_ende">Bis</label>
-                    <input class="en-input" type="date" name="seminar_ende" id="seminar_ende">
-                </div>
-            </div>
-            
-            <!-- 1-Tages-Seminar Package Display -->
-            <div id="package_1tag" class="en-griditem en-space-large">
-                <div class="en-format-small" style="padding: 1.5em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
-                    <h4 class="en-format-h5" style="margin-bottom: 1em;">1-Tages-Seminar Paket <span style="color: #bdadad;">(€ 77,00 pro Person)</span></h4>
-                    <p style="margin-bottom: 0.5em;"><strong>Leistungen (inkludiert):</strong></p>
-                    <ul style="margin-left: 1.5em; margin-bottom: 1em;">
-                        <li>Empfang / Genusspause pikant & süß gemischt</li>
-                        <li>Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet</li>
-                        <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 class="en-griditem en-format-h5 en-space-large">Personenanzahl</h3>
-            
-            <div class="en-input-cnt en-griditem slider-container" data-en-griditem-medium="2">
-                <label class="en-format-small" for="personenanzahl">Personenanzahl</label>
-                <input type="range" name="personenanzahl_slider" id="personenanzahl_slider" min="0" max="100" value="0" step="1">
-                <div class="slider-value-display" id="personenanzahl_display">0</div>
-                <input type="hidden" name="personenanzahl" id="personenanzahl" value="0">
-            </div>
-            
-            <!-- Room fields - only visible for Mehrtägiges Seminar -->
-            <div id="room_fields_section" class="en-griditem" style="display: none;">
-                <h4 class="en-format-h5" style="margin-bottom: 1em;">Zimmer</h4>
-                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                    <label class="en-format-small" for="zimmer_einzel">Einzelzimmer (€ 125,00 pro Nacht)</label>
-                    <input class="en-input" type="number" name="zimmer_einzel" id="zimmer_einzel" min="0" value="0">
+
+                <!-- Tab Navigation -->
+                <div class="tab-navigation">
+                    <button type="button" class="tab-button active" data-tab="tab-seminar">Seminar-Typ</button>
+                    <button type="button" class="tab-button" data-tab="tab-ausstattung">Sitzordnung & Ausstattung</button>
+                    <button type="button" class="tab-button" data-tab="tab-verpflegung" id="tab-btn-verpflegung" style="display: none;">Verpflegung</button>
+                    <button type="button" class="tab-button" data-tab="tab-rahmenprogramm" id="tab-btn-rahmenprogramm" style="display: none;">Rahmenprogramm</button>
                 </div>
 
-                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                    <label class="en-format-small" for="zimmer_doppel">Doppelzimmer (€ 95,00 pro Person/Nacht)</label>
-                    <input class="en-input" type="number" name="zimmer_doppel" id="zimmer_doppel" min="0" value="0">
-                </div>
-            </div>
+                <!-- Tab Contents -->
+                <div class="tab-contents">
 
-                    <!-- Room Allocation Display -->
-                    <div class="en-griditem en-space-large" id="room-allocation-display">
-                        <div class="en-format-small" style="padding: 1em; background-color: #dddfd6; border-radius: 0.25rem;">
-                            <strong>Vorgeschlagener Seminarraum:</strong> <span id="room-suggestion">Bitte Zimmer auswählen</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Room Setup Selection -->
-                    <div class="en-griditem en-space-large">
-                        <h4 class="en-format-h5" style="margin-bottom: 1em;">Sitzordnung wählen</h4>
-                        <div class="room-setup-selector">
-                            <div class="room-setup-option">
-                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_block" value="block">
-                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_block">
-                                    <img src="pics/block.svg" alt="Block" class="room-setup-image">
-                                    <span class="room-setup-name">Block</span>
-                                </label>
+                    <!-- Tab 1: Seminar-Typ -->
+                    <div class="tab-content active" id="tab-seminar">
+                        <div class="form-section form-section--basic">
+                            <h3 class="en-griditem en-format-h5 en-space-large">Seminar-Typ</h3>
+
+                            <div class="en-griditem">
+                                <input class="en-replace" type="radio" name="seminar_typ" id="seminar_1tag" value="1tag" required checked>
+                                <label class="en-replacement en-replacement--radio en-format-small" for="seminar_1tag">1-Tages-Seminar</label>
+
+                                <input class="en-replace" type="radio" name="seminar_typ" id="seminar_mehrtag" value="mehrtag" required>
+                                <label class="en-replacement en-replacement--radio en-format-small" for="seminar_mehrtag">Mehrtägiges Seminar</label>
                             </div>
-                            
-                            <div class="room-setup-option">
-                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_fisch" value="fisch">
-                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_fisch">
-                                    <img src="pics/fisch.svg" alt="Fisch" class="room-setup-image">
-                                    <span class="room-setup-name">Fisch</span>
-                                </label>
+
+                            <!-- Date Selection: Single date for 1-Tages-Seminar -->
+                            <div id="date_single_section" class="en-griditem" style="display: block;">
+                                <div class="en-input-cnt" data-en-griditem-medium="2">
+                                    <label class="en-format-small" for="seminar_datum">Datum</label>
+                                    <input class="en-input" type="date" name="seminar_datum" id="seminar_datum" required>
+                                </div>
                             </div>
-                            
-                            <div class="room-setup-option">
-                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_parlament" value="parlament">
-                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_parlament">
-                                    <img src="pics/parlament.svg" alt="Parlament" class="room-setup-image">
-                                    <span class="room-setup-name">Parlament</span>
-                                </label>
+
+                            <!-- Date Selection: Start and End dates for Mehrtägiges Seminar -->
+                            <div id="date_range_section" class="en-griditem" style="display: none;">
+                                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                                    <label class="en-format-small" for="seminar_start">Von</label>
+                                    <input class="en-input" type="date" name="seminar_start" id="seminar_start">
+                                </div>
+                                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                                    <label class="en-format-small" for="seminar_ende">Bis</label>
+                                    <input class="en-input" type="date" name="seminar_ende" id="seminar_ende">
+                                </div>
                             </div>
-                            
-                            <div class="room-setup-option">
-                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_sesselkreis" value="sesselkreis">
-                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_sesselkreis">
-                                    <img src="pics/sesselkreis.svg" alt="Sesselkreis" class="room-setup-image">
-                                    <span class="room-setup-name">Sesselkreis</span>
-                                </label>
+
+                            <!-- 1-Tages-Seminar Package Display -->
+                            <div id="package_1tag" class="en-griditem en-space-large">
+                                <div class="en-format-small" style="padding: 1.5em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
+                                    <h4 class="en-format-h5" style="margin-bottom: 1em;">1-Tages-Seminar Paket <span style="color: #bdadad;">(€ 77,00 pro Person)</span></h4>
+                                    <p style="margin-bottom: 0.5em;"><strong>Leistungen (inkludiert):</strong></p>
+                                    <ul style="margin-left: 1.5em; margin-bottom: 1em;">
+                                        <li>Empfang / Genusspause pikant & süß gemischt</li>
+                                        <li>Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet</li>
+                                        <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb</li>
+                                    </ul>
+                                </div>
                             </div>
-                            
-                            <div class="room-setup-option">
-                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_theater" value="theater">
-                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_theater">
-                                    <img src="pics/theater.svg" alt="Theater" class="room-setup-image">
-                                    <span class="room-setup-name">Theater</span>
-                                </label>
+
+                            <h3 class="en-griditem en-format-h5 en-space-large">Personenanzahl</h3>
+
+                            <div class="en-input-cnt en-griditem slider-container" data-en-griditem-medium="2">
+                                <label class="en-format-small" for="personenanzahl">Personenanzahl</label>
+                                <input type="range" name="personenanzahl_slider" id="personenanzahl_slider" min="0" max="100" value="0" step="1">
+                                <div class="slider-value-display" id="personenanzahl_display">0</div>
+                                <input type="hidden" name="personenanzahl" id="personenanzahl" value="0">
                             </div>
-                            
-                            <div class="room-setup-option">
-                                <input class="en-replace" type="radio" name="room_setup" id="room_setup_uform" value="u-form">
-                                <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_uform">
-                                    <img src="pics/u-form.svg" alt="U-Form" class="room-setup-image">
-                                    <span class="room-setup-name">U-Form</span>
-                                </label>
+
+                            <!-- Room fields - only visible for Mehrtägiges Seminar -->
+                            <div id="room_fields_section" class="en-griditem" style="display: none;">
+                                <h4 class="en-format-h5" style="margin-bottom: 1em;">Zimmer</h4>
+                                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                                    <label class="en-format-small" for="zimmer_einzel">Einzelzimmer (€ 125,00 pro Nacht)</label>
+                                    <input class="en-input" type="number" name="zimmer_einzel" id="zimmer_einzel" min="0" value="0">
+                                </div>
+
+                                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                                    <label class="en-format-small" for="zimmer_doppel">Doppelzimmer (€ 95,00 pro Person/Nacht)</label>
+                                    <input class="en-input" type="number" name="zimmer_doppel" id="zimmer_doppel" min="0" value="0">
+                                </div>
+                            </div>
+
+                            <!-- Room Allocation Display -->
+                            <div class="en-griditem en-space-large" id="room-allocation-display">
+                                <div class="en-format-small" style="padding: 1em; background-color: #dddfd6; border-radius: 0.25rem;">
+                                    <strong>Vorgeschlagener Seminarraum:</strong> <span id="room-suggestion">Bitte Zimmer auswählen</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Equipment Section -->
-                    <div class="equipment-section">
-                      <h2>Dürfen wir eine zusätzliche Ausstattung für Sie vorbereiten?</h2>
-                      <p style="font-size: 14px; color: #666; margin-bottom: 12px;"><strong>In der Pauschale für Sie inkludiert:</strong> WLAN, Beamer, Leinwand, 2 Flipcharts mit Papier und Stiften, Magnetwände, 1 Pinnwand, Moderationskoffer, Kugelschreiber & Block</p>
-                      <p style="font-size: 14px; color: #666; margin-bottom: 16px; font-weight: 600;">Zusatzausstattung:</p>
-                      <div class="equipment-list">
-                        <span class="equipment-item">Flipchart € 10,00 pro Stück/Tag</span>
-                        <input type="number" class="equipment-input" name="equipment_flipcharts" value="0" min="0">
+                    <!-- Tab 2: Sitzordnung & Ausstattung -->
+                    <div class="tab-content" id="tab-ausstattung">
+                        <div class="form-section form-section--basic">
+                            <!-- Room Setup Selection -->
+                            <div class="en-griditem">
+                                <h4 class="en-format-h5" style="margin-bottom: 1em;">Sitzordnung wählen</h4>
+                                <div class="room-setup-selector">
+                                    <div class="room-setup-option">
+                                        <input class="en-replace" type="radio" name="room_setup" id="room_setup_block" value="block">
+                                        <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_block">
+                                            <img src="pics/block.svg" alt="Block" class="room-setup-image">
+                                            <span class="room-setup-name">Block</span>
+                                        </label>
+                                    </div>
 
-                        <span class="equipment-item">Pinnwand € 10,00 pro Stück/Tag</span>
-                        <input type="number" class="equipment-input" name="equipment_pinnwand" value="0" min="0">
+                                    <div class="room-setup-option">
+                                        <input class="en-replace" type="radio" name="room_setup" id="room_setup_fisch" value="fisch">
+                                        <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_fisch">
+                                            <img src="pics/fisch.svg" alt="Fisch" class="room-setup-image">
+                                            <span class="room-setup-name">Fisch</span>
+                                        </label>
+                                    </div>
 
-                        <span class="equipment-item">Displayboard & Hybrid-Technologie € 85,00 pro Tag</span>
-                        <input type="number" class="equipment-input" name="equipment_displayboard" value="0" min="0">
+                                    <div class="room-setup-option">
+                                        <input class="en-replace" type="radio" name="room_setup" id="room_setup_parlament" value="parlament">
+                                        <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_parlament">
+                                            <img src="pics/parlament.svg" alt="Parlament" class="room-setup-image">
+                                            <span class="room-setup-name">Parlament</span>
+                                        </label>
+                                    </div>
 
-                        <span class="equipment-item">Funkmikrofon € 30,00 pro Tag</span>
-                        <input type="number" class="equipment-input" name="equipment_funkmikrofon" value="0" min="0">
+                                    <div class="room-setup-option">
+                                        <input class="en-replace" type="radio" name="room_setup" id="room_setup_sesselkreis" value="sesselkreis">
+                                        <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_sesselkreis">
+                                            <img src="pics/sesselkreis.svg" alt="Sesselkreis" class="room-setup-image">
+                                            <span class="room-setup-name">Sesselkreis</span>
+                                        </label>
+                                    </div>
 
-                        <span class="equipment-item">Presenter € 9,00 pro Tag</span>
-                        <input type="number" class="equipment-input" name="equipment_presenter" value="0" min="0">
+                                    <div class="room-setup-option">
+                                        <input class="en-replace" type="radio" name="room_setup" id="room_setup_theater" value="theater">
+                                        <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_theater">
+                                            <img src="pics/theater.svg" alt="Theater" class="room-setup-image">
+                                            <span class="room-setup-name">Theater</span>
+                                        </label>
+                                    </div>
 
-                        <span class="equipment-item">Laptop € 30,00 pro Tag</span>
-                        <input type="number" class="equipment-input" name="equipment_laptop" value="0" min="0">
+                                    <div class="room-setup-option">
+                                        <input class="en-replace" type="radio" name="room_setup" id="room_setup_uform" value="u-form">
+                                        <label class="en-replacement en-replacement--radio room-setup-label" for="room_setup_uform">
+                                            <img src="pics/u-form.svg" alt="U-Form" class="room-setup-image">
+                                            <span class="room-setup-name">U-Form</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <span class="equipment-item">Zusätzliche Wünsche:</span>
-                        <input type="text" class="equipment-input" name="equipment_sonstiges" placeholder="Hier eintragen">
-                      </div>
-                    </div>
-                </div>
+                            <!-- Equipment Section -->
+                            <div class="equipment-section">
+                                <h2>Dürfen wir eine zusätzliche Ausstattung für Sie vorbereiten?</h2>
+                                <p style="font-size: 14px; color: #666; margin-bottom: 12px;"><strong>In der Pauschale für Sie inkludiert:</strong> WLAN, Beamer, Leinwand, 2 Flipcharts mit Papier und Stiften, Magnetwände, 1 Pinnwand, Moderationskoffer, Kugelschreiber & Block</p>
+                                <p style="font-size: 14px; color: #666; margin-bottom: 16px; font-weight: 600;">Zusatzausstattung:</p>
+                                <div class="equipment-list">
+                                    <span class="equipment-item">Flipchart € 10,00 pro Stück/Tag</span>
+                                    <input type="number" class="equipment-input" name="equipment_flipcharts" value="0" min="0">
 
-                <!-- Verpflegung Section - only visible for Mehrtägiges Seminar -->
-                <div id="catering_section" class="form-section form-section--catering" style="display: none;">
-                <h3 class="en-griditem en-format-h5 en-space-large">Verpflegung</h3>
+                                    <span class="equipment-item">Pinnwand € 10,00 pro Stück/Tag</span>
+                                    <input type="number" class="equipment-input" name="equipment_pinnwand" value="0" min="0">
 
-                <!-- Fixed items that cannot be deselected -->
-                <div class="en-griditem" style="margin-bottom: 1.5em; padding: 1em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
-                    <p class="en-format-small" style="margin-bottom: 0.5em;"><strong>Immer inkludiert (fix):</strong></p>
-                    <ul style="margin-left: 1.5em; font-size: 0.9em;">
-                        <li>Nächtigung inkl. Genießerfrühstück</li>
-                        <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb & Seminarraumnutzung</li>
-                    </ul>
-                </div>
+                                    <span class="equipment-item">Displayboard & Hybrid-Technologie € 85,00 pro Tag</span>
+                                    <input type="number" class="equipment-input" name="equipment_displayboard" value="0" min="0">
 
-                <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">1. Pausenverpflegung</h4>
-                
-                <div class="en-griditem" style="margin-bottom: 1.5em;">
-                    <label class="en-format-small" style="display: block; margin-bottom: 0.75em; font-weight: 700;">Vormittags-Pause:</label>
-                    <div style="display: flex; flex-direction: column; gap: 0.5em;">
-                        <div>
-                            <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_gemischt" data-price-key="catering.pause_gemischt" checked>
-                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_gemischt">Genusspause pikant & süß gemischt</label>
-                        </div>
-                        <div>
-                            <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_pikant" data-price-key="catering.pause_pikant">
-                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_pikant">Genusspause pikant</label>
-                        </div>
-                        <div>
-                            <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_suess" data-price-key="catering.pause_suess">
-                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_suess">Genusspause süß</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="en-griditem" style="margin-bottom: 1.5em;">
-                    <label class="en-format-small" style="display: block; margin-bottom: 0.75em; font-weight: 700;">Nachmittags-Pause:</label>
-                    <div style="display: flex; flex-direction: column; gap: 0.5em;">
-                        <div>
-                            <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_gemischt" data-price-key="catering.pause_gemischt" checked>
-                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_gemischt">Genusspause pikant & süß gemischt</label>
-                        </div>
-                        <div>
-                            <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_pikant" data-price-key="catering.pause_pikant">
-                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_pikant">Genusspause pikant</label>
-                        </div>
-                        <div>
-                            <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_suess" data-price-key="catering.pause_suess">
-                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_suess">Genusspause süß</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">2. Mittagessen</h4>
-                
-                <div class="en-griditem">
-                    <label class="en-format-small" for="catering_mittagessen">
-                        <input type="checkbox" name="catering_mittagessen" id="catering_mittagessen" data-price-key="catering.mittagessen_base" checked>
-                        Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet
-                    </label>
-                </div>
-                
-                <div class="en-griditem">
-                    <label class="en-format-small" for="catering_mittagessen_getraenke">
-                        <input type="checkbox" name="catering_mittagessen_getraenke" id="catering_mittagessen_getraenke" data-price-key="catering.mittagessen_getraenke" checked>
-                        Unlimitiert Alkoholfreie Getränke zum Mittagessen
-                    </label>
-                </div>
-                
-                <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">3. Abendessen</h4>
-                
-                <div class="en-griditem">
-                    <div style="display: flex; flex-direction: column; gap: 0.5em;">
-                        <div>
-                            <input class="en-replace" type="radio" name="catering_abendessen" id="catering_abendessen_base" data-price-key="catering.abendessen_base" value="base" checked>
-                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_abendessen_base">Abendessen, 4-Gang-Wahl-Menü plus Salat- und Käse vom Buffet</label>
-                        </div>
-                        <div>
-                            <input class="en-replace" type="radio" name="catering_abendessen" id="catering_abendessen_upgrade" data-price-key="catering.abendessen_steak" value="upgrade">
-                            <label class="en-replacement en-replacement--radio en-format-small" for="catering_abendessen_upgrade">Abendessen inkl. DRY AGED Starzenberger Steak</label>
+                                    <span class="equipment-item">Funkmikrofon € 30,00 pro Tag</span>
+                                    <input type="number" class="equipment-input" name="equipment_funkmikrofon" value="0" min="0">
+
+                                    <span class="equipment-item">Presenter € 9,00 pro Tag</span>
+                                    <input type="number" class="equipment-input" name="equipment_presenter" value="0" min="0">
+
+                                    <span class="equipment-item">Laptop € 30,00 pro Tag</span>
+                                    <input type="number" class="equipment-input" name="equipment_laptop" value="0" min="0">
+
+                                    <span class="equipment-item">Zusätzliche Wünsche:</span>
+                                    <input type="text" class="equipment-input" name="equipment_sonstiges" placeholder="Hier eintragen">
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Tab 3: Verpflegung (only for Mehrtägiges Seminar) -->
+                    <div class="tab-content" id="tab-verpflegung">
+                        <div class="form-section form-section--catering">
+                            <h3 class="en-griditem en-format-h5 en-space-large">Verpflegung</h3>
+
+                            <!-- Fixed items that cannot be deselected -->
+                            <div class="en-griditem" style="margin-bottom: 1.5em; padding: 1em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
+                                <p class="en-format-small" style="margin-bottom: 0.5em;"><strong>Immer inkludiert (fix):</strong></p>
+                                <ul style="margin-left: 1.5em; font-size: 0.9em;">
+                                    <li>Nächtigung inkl. Genießerfrühstück</li>
+                                    <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb & Seminarraumnutzung</li>
+                                </ul>
+                            </div>
+
+                            <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">1. Pausenverpflegung</h4>
+
+                            <div class="en-griditem" style="margin-bottom: 1.5em;">
+                                <label class="en-format-small" style="display: block; margin-bottom: 0.75em; font-weight: 700;">Vormittags-Pause:</label>
+                                <div style="display: flex; flex-direction: column; gap: 0.5em;">
+                                    <div>
+                                        <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_gemischt" data-price-key="catering.pause_gemischt" checked>
+                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_gemischt">Genusspause pikant & süß gemischt</label>
+                                    </div>
+                                    <div>
+                                        <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_pikant" data-price-key="catering.pause_pikant">
+                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_pikant">Genusspause pikant</label>
+                                    </div>
+                                    <div>
+                                        <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_suess" data-price-key="catering.pause_suess">
+                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_suess">Genusspause süß</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="en-griditem" style="margin-bottom: 1.5em;">
+                                <label class="en-format-small" style="display: block; margin-bottom: 0.75em; font-weight: 700;">Nachmittags-Pause:</label>
+                                <div style="display: flex; flex-direction: column; gap: 0.5em;">
+                                    <div>
+                                        <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_gemischt" data-price-key="catering.pause_gemischt" checked>
+                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_gemischt">Genusspause pikant & süß gemischt</label>
+                                    </div>
+                                    <div>
+                                        <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_pikant" data-price-key="catering.pause_pikant">
+                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_pikant">Genusspause pikant</label>
+                                    </div>
+                                    <div>
+                                        <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_suess" data-price-key="catering.pause_suess">
+                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_suess">Genusspause süß</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">2. Mittagessen</h4>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="catering_mittagessen">
+                                    <input type="checkbox" name="catering_mittagessen" id="catering_mittagessen" data-price-key="catering.mittagessen_base" checked>
+                                    Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet
+                                </label>
+                            </div>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="catering_mittagessen_getraenke">
+                                    <input type="checkbox" name="catering_mittagessen_getraenke" id="catering_mittagessen_getraenke" data-price-key="catering.mittagessen_getraenke" checked>
+                                    Unlimitiert Alkoholfreie Getränke zum Mittagessen
+                                </label>
+                            </div>
+
+                            <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">3. Abendessen</h4>
+
+                            <div class="en-griditem">
+                                <div style="display: flex; flex-direction: column; gap: 0.5em;">
+                                    <div>
+                                        <input class="en-replace" type="radio" name="catering_abendessen" id="catering_abendessen_base" data-price-key="catering.abendessen_base" value="base" checked>
+                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_abendessen_base">Abendessen, 4-Gang-Wahl-Menü plus Salat- und Käse vom Buffet</label>
+                                    </div>
+                                    <div>
+                                        <input class="en-replace" type="radio" name="catering_abendessen" id="catering_abendessen_upgrade" data-price-key="catering.abendessen_steak" value="upgrade">
+                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_abendessen_upgrade">Abendessen inkl. DRY AGED Starzenberger Steak</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Rahmenprogramm (only for Mehrtägiges Seminar) -->
+                    <div class="tab-content" id="tab-rahmenprogramm">
+                        <div class="form-section form-section--equipment">
+                            <h3 class="en-griditem en-format-h5 en-space-large">Zusatzleistungen und Rahmenprogramme</h3>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="aktivitaet_yoga">
+                                    <input type="checkbox" name="aktivitaet_yoga" id="aktivitaet_yoga" data-price-key="activities.yoga">
+                                    Yoga / Pilates <span style="color: #888;">(€ 220,00 pauschal)</span>
+                                </label>
+                            </div>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="aktivitaet_ebike">
+                                    <input type="checkbox" name="aktivitaet_ebike" id="aktivitaet_ebike" data-price-key="activities.ebike">
+                                    E-Bikes <span style="color: #888;">(€ 35,00 pro Person)</span>
+                                </label>
+                            </div>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="aktivitaet_wein">
+                                    <input type="checkbox" name="aktivitaet_wein" id="aktivitaet_wein" data-price-key="activities.wein">
+                                    Weinverkostung <span style="color: #888;">(€ 35,00 pro Person)</span>
+                                </label>
+                            </div>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="aktivitaet_spirituosen">
+                                    <input type="checkbox" name="aktivitaet_spirituosen" id="aktivitaet_spirituosen" data-price-key="activities.spirituosen">
+                                    Führung und Verkostung bei D/G - house of whiskey, gin & rum <span style="color: #888;">(€ 14,70 pro Person)</span>
+                                </label>
+                            </div>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="aktivitaet_goelles">
+                                    <input type="checkbox" name="aktivitaet_goelles" id="aktivitaet_goelles" data-price-key="activities.goelles">
+                                    Führung und Verkostung in der Manufaktur Gölles <span style="color: #888;">(€ 14,50 pro Person)</span>
+                                </label>
+                            </div>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="aktivitaet_zotter">
+                                    <input type="checkbox" name="aktivitaet_zotter" id="aktivitaet_zotter" data-price-key="activities.zotter">
+                                    Rundgang und Verkostung in der Zotter Schokoladenmanufaktur <span style="color: #888;">(€ 21,90 pro Person)</span>
+                                </label>
+                            </div>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="aktivitaet_vulcano">
+                                    <input type="checkbox" name="aktivitaet_vulcano" id="aktivitaet_vulcano" data-price-key="activities.vulcano">
+                                    Führung und Verkostung in der Vulcano Schinkenwelt <span style="color: #888;">(€ 18,00 pro Person)</span>
+                                </label>
+                            </div>
+
+                            <div class="en-griditem">
+                                <label class="en-format-small" for="aktivitaet_riegersburg">
+                                    <input type="checkbox" name="aktivitaet_riegersburg" id="aktivitaet_riegersburg" data-price-key="activities.riegersburg">
+                                    Besuch Burg Riegersburg <span style="color: #888;">(€ 8,50 pro Person)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                </div>
-                
-                <!-- Zusatzleistungen und Rahmenprogramme - only visible for Mehrtägiges Seminar -->
-                <div id="equipment_activities_section" class="form-section form-section--equipment" style="display: none;">
-                <h3 class="en-griditem en-format-h5 en-space-large">Zusatzleistungen und Rahmenprogramme</h3>
 
-            <div class="en-griditem">
-                <label class="en-format-small" for="aktivitaet_yoga">
-                    <input type="checkbox" name="aktivitaet_yoga" id="aktivitaet_yoga" data-price-key="activities.yoga">
-                    Yoga / Pilates <span style="color: #888;">(€ 220,00 pauschal)</span>
-                </label>
-            </div>
-
-            <div class="en-griditem">
-                <label class="en-format-small" for="aktivitaet_ebike">
-                    <input type="checkbox" name="aktivitaet_ebike" id="aktivitaet_ebike" data-price-key="activities.ebike">
-                    E-Bikes <span style="color: #888;">(€ 35,00 pro Person)</span>
-                </label>
-            </div>
-
-            <div class="en-griditem">
-                <label class="en-format-small" for="aktivitaet_wein">
-                    <input type="checkbox" name="aktivitaet_wein" id="aktivitaet_wein" data-price-key="activities.wein">
-                    Weinverkostung <span style="color: #888;">(€ 35,00 pro Person)</span>
-                </label>
-            </div>
-
-            <div class="en-griditem">
-                <label class="en-format-small" for="aktivitaet_spirituosen">
-                    <input type="checkbox" name="aktivitaet_spirituosen" id="aktivitaet_spirituosen" data-price-key="activities.spirituosen">
-                    Führung und Verkostung bei D/G - house of whiskey, gin & rum <span style="color: #888;">(€ 14,70 pro Person)</span>
-                </label>
-            </div>
-
-            <div class="en-griditem">
-                <label class="en-format-small" for="aktivitaet_goelles">
-                    <input type="checkbox" name="aktivitaet_goelles" id="aktivitaet_goelles" data-price-key="activities.goelles">
-                    Führung und Verkostung in der Manufaktur Gölles <span style="color: #888;">(€ 14,50 pro Person)</span>
-                </label>
-            </div>
-
-            <div class="en-griditem">
-                <label class="en-format-small" for="aktivitaet_zotter">
-                    <input type="checkbox" name="aktivitaet_zotter" id="aktivitaet_zotter" data-price-key="activities.zotter">
-                    Rundgang und Verkostung in der Zotter Schokoladenmanufaktur <span style="color: #888;">(€ 21,90 pro Person)</span>
-                </label>
-            </div>
-
-            <div class="en-griditem">
-                <label class="en-format-small" for="aktivitaet_vulcano">
-                    <input type="checkbox" name="aktivitaet_vulcano" id="aktivitaet_vulcano" data-price-key="activities.vulcano">
-                    Führung und Verkostung in der Vulcano Schinkenwelt <span style="color: #888;">(€ 18,00 pro Person)</span>
-                </label>
-            </div>
-
-            <div class="en-griditem">
-                <label class="en-format-small" for="aktivitaet_riegersburg">
-                    <input type="checkbox" name="aktivitaet_riegersburg" id="aktivitaet_riegersburg" data-price-key="activities.riegersburg">
-                    Besuch Burg Riegersburg <span style="color: #888;">(€ 8,50 pro Person)</span>
-                </label>
-            </div>
-                </div>
-                
-                <!-- Contact Information Section -->
+                <!-- Contact Information Section (Always Visible) -->
                 <div class="form-section form-section--contact">
                     <h3 class="en-griditem en-format-h5 en-space-large">Ihre Kontaktdaten</h3>
-            
-            <div class="en-griditem">
-                <input class="en-replace" type="radio" name="anrede" id="anrede_frau" value="Frau" required>
-                <label class="en-replacement en-replacement--radio en-format-small" for="anrede_frau">Frau</label>
-                
-                <input class="en-replace" type="radio" name="anrede" id="anrede_herr" value="Herr" required>
-                <label class="en-replacement en-replacement--radio en-format-small" for="anrede_herr">Herr</label>
-            </div>
-            
-            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                <label class="en-format-small" for="vorname">Vorname *</label>
-                <input class="en-input" type="text" name="vorname" id="vorname" required>
-            </div>
-            
-            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                <label class="en-format-small" for="nachname">Nachname *</label>
-                <input class="en-input" type="text" name="nachname" id="nachname" required>
-            </div>
-            
-            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                <label class="en-format-small" for="email">E-Mail *</label>
-                <input class="en-input" type="email" name="email" id="email" required>
-            </div>
-            
-            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                <label class="en-format-small" for="telefon">Telefon</label>
-                <input class="en-input" type="tel" name="telefon" id="telefon">
-            </div>
-            
-            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                <label class="en-format-small" for="firma">Firma</label>
-                <input class="en-input" type="text" name="firma" id="firma">
-            </div>
-            
-            <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                <label class="en-format-small" for="nachricht">Nachricht</label>
-                <textarea class="en-input" name="nachricht" id="nachricht" rows="4"></textarea>
-            </div>
-            
+
+                    <div class="en-griditem">
+                        <input class="en-replace" type="radio" name="anrede" id="anrede_frau" value="Frau" required>
+                        <label class="en-replacement en-replacement--radio en-format-small" for="anrede_frau">Frau</label>
+
+                        <input class="en-replace" type="radio" name="anrede" id="anrede_herr" value="Herr" required>
+                        <label class="en-replacement en-replacement--radio en-format-small" for="anrede_herr">Herr</label>
+                    </div>
+
+                    <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                        <label class="en-format-small" for="vorname">Vorname *</label>
+                        <input class="en-input" type="text" name="vorname" id="vorname" required>
+                    </div>
+
+                    <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                        <label class="en-format-small" for="nachname">Nachname *</label>
+                        <input class="en-input" type="text" name="nachname" id="nachname" required>
+                    </div>
+
+                    <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                        <label class="en-format-small" for="email">E-Mail *</label>
+                        <input class="en-input" type="email" name="email" id="email" required>
+                    </div>
+
+                    <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                        <label class="en-format-small" for="telefon">Telefon</label>
+                        <input class="en-input" type="tel" name="telefon" id="telefon">
+                    </div>
+
+                    <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                        <label class="en-format-small" for="firma">Firma</label>
+                        <input class="en-input" type="text" name="firma" id="firma">
+                    </div>
+
+                    <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                        <label class="en-format-small" for="nachricht">Nachricht</label>
+                        <textarea class="en-input" name="nachricht" id="nachricht" rows="4"></textarea>
+                    </div>
+
                     <p class="en-griditem en-format-tiny">* Pflichtfelder</p>
-                    
+
                     <div class="en-griditem">
                         <button type="submit" class="en-button en-button--filled">Anfrage senden</button>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Right Column: Price Summary (Sticky) -->
             <div class="form-column-right">
                 <div id="price-summary-section">
@@ -421,4 +446,3 @@
     </div>
 </body>
 </html>
-
