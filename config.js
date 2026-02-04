@@ -6,7 +6,7 @@
 
 window.SeminarFormConfig = {
     // Google Apps Script web app URL for fetching prices
-    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbxurGVVhs3x8BAEMSYisVwLKLofeFX6FQyYNH0hOqyc_RM9MK8LFWBIYsMbv8mKoKTl/exec',
+    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbyoW1gCNEuldH9RDxvueQwA9FyE40P6g4n8fbTQU8-zjVkc_tCNHZY7Rj5VOhytN65A/exec',
     
     // Local fallback file (used if Apps Script fails)
     localPricesUrl: 'prices.json',

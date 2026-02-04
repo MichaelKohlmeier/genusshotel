@@ -1,0 +1,29 @@
+category,key,label,price,unit
+1tag,base_price,1-Tages-Seminar Pauschale,77,pro Person
+catering,saftbar,Saftbar mit heimischen Säften Mineralwasser Kaffee/Tee Obstkorb & Seminarraum,26,pro Person/Tag
+catering,pause_gemischt,Genusspause pikant & süß gemischt,14,pro Person
+catering,pause_pikant,Genusspause pikant,12,pro Person
+catering,pause_suess,Genusspause süß,8,pro Person
+catering,mittagessen_base,Mittagessen 3-Gang-Wahl-Menü plus Salatbuffet,34,pro Person
+catering,mittagessen_getraenke,Unlimitiert Alkoholfreie Getränke zum Mittagessen,5,pro Person
+catering,abendessen_base,Abendessen 4-Gang-Wahl-Menü plus Salat- und Käse vom Buffet,52,pro Person
+catering,abendessen_steak,Abendessen inkl. DRY AGED Starzenberger Steak,45,pro Person
+rooms,single_per_night,Einzelzimmer,125,pro Nacht
+rooms,double_per_person,Doppelzimmer,95,pro Person/Nacht
+rooms,naechtigungsabgabe,Nächtigungsabgabe,2.50,pro Person/Nacht
+equipment,raumgarantie,Raumgarantie,200,pauschal
+equipment,gruppenraum,Gruppenraum,100,pro Tag
+equipment,flipchart,Flipchart,10,pro Stück/Tag
+equipment,pinnwand,Pinnwand,10,pro Stück/Tag
+equipment,displayboard,Displayboard & Hybrid-Technologie,85,pro Tag
+equipment,funkmikrofon,Funkmikrofon,30,pro Tag
+equipment,presenter,Presenter,9,pro Tag
+equipment,laptop,Laptop,30,pro Tag
+activities,yoga,Yoga / Pilates,220,pauschal
+activities,ebike,E-Bikes,35,pro Person
+activities,wein,Weinverkostung,35,pro Person
+activities,spirituosen,Führung und Verkostung bei D/G - house of whiskey gin & rum,14.70,pro Person
+activities,goelles,Führung und Verkostung in der Manufaktur Gölles,14.50,pro Person
+activities,zotter,Rundgang und Verkostung in der Zotter Schokoladenmanufaktur,21.90,pro Person
+activities,vulcano,Führung und Verkostung in der Vulcano Schinkenwelt,18,pro Person
+activities,riegersburg,Besuch Burg Riegersburg,8.50,pro Person

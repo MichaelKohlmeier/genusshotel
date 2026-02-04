@@ -1,43 +1,31 @@
 /**
- * Google Apps Script Template
- * 
- * Instructions:
- * 1. Open your Google Sheet with the pricelist
- * 2. Go to Extensions > Apps Script
- * 3. Replace the default code with this script
- * 4. Update the sheet name if different from "Sheet1"
- * 5. Save the script
- * 6. Deploy > New deployment > Type: Web app
- * 7. Execute as: Me
- * 8. Who has access: Anyone (or specific domain)
- * 9. Click Deploy and copy the web app URL
- * 10. Add the URL to pricelist.js CONFIG.appsScriptUrl
+ * Google Apps Script für Seminar-Preisliste
+ *
+ * Anleitung:
+ * 1. Öffnen Sie Ihr Google Sheet mit der Preisliste
+ * 2. Gehen Sie zu Erweiterungen > Apps Script
+ * 3. Ersetzen Sie den Standard-Code mit diesem Script
+ * 4. Speichern Sie das Script
+ * 5. Bereitstellen > Neue Bereitstellung > Typ: Web-App
+ * 6. Ausführen als: Ich
+ * 7. Zugriff: Jeder
+ * 8. Klicken Sie auf Bereitstellen und kopieren Sie die Web-App-URL
+ * 9. Fügen Sie die URL in config.js ein
+ *
+ * Erwartetes Sheet-Format:
+ * Spalte A: category (z.B. "catering", "rooms", "equipment", "activities")
+ * Spalte B: key (z.B. "pause_gemischt", "single_per_night")
+ * Spalte C: label (Beschreibung für Menschen)
+ * Spalte D: price (Preis als Zahl)
+ * Spalte E: unit (optional - z.B. "pro Person", "pauschal")
  */
 
-function doGet() {
+function doGet(e) {
   try {
-    // Get the active spreadsheet (or specify by ID)
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1');
-    
-    if (!sheet) {
-      return ContentService.createTextOutput(JSON.stringify({
-        error: 'Sheet not found'
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // Get all data from the sheet
-    const data = sheet.getDataRange().getValues();
-    
-    // Convert sheet data to JSON structure
-    // Expected sheet structure:
-    // Row 1: Headers (Category, Subcategory, Item, Price)
-    // Row 2+: Data rows
-    const prices = convertSheetToJSON(data);
-    
-    // Return JSON response
-    return ContentService.createTextOutput(JSON.stringify(prices))
+    var data = getPricelistFromSheet();
+
+    return ContentService.createTextOutput(JSON.stringify(data))
       .setMimeType(ContentService.MimeType.JSON);
-      
   } catch (error) {
     return ContentService.createTextOutput(JSON.stringify({
       error: error.toString()
@@ -45,62 +33,53 @@ function doGet() {
   }
 }
 
-/**
- * Convert sheet data to JSON structure matching prices.json format
- * 
- * Sheet format option 1 (Recommended - Simple):
- * Column A: Key path (e.g., "1tag.base_price")
- * Column B: Value (e.g., 74.00)
- * 
- * Sheet format option 2 (Structured):
- * Multiple sheets or structured layout matching JSON hierarchy
- */
-function convertSheetToJSON(data) {
-  // If first row is headers, skip it
-  const startRow = data[0][0].toLowerCase().includes('key') ? 1 : 0;
-  
-  const prices = {
-    "1tag": { "base_price": 74.00 },
-    "catering": {
-      "pause": { "gemischt": 14.00, "pikant": 12.00, "suess": 8.00 },
-      "mittagessen": { "base": 34.00, "getraenke": 5.00 },
-      "abendessen": { "base": 52.00, "upgrade_steak": 87.00 }
-    },
-    "rooms": { "per_night": 151.00, "naechtigungsabgabe": 2.50 },
-    "equipment": { "raumgarantie": 200.00, "gruppenraum_per_day": 100.00 },
-    "activities": { "yoga": 0, "wein": 0, "spirituosen": 0, "zotter": 0, "vulcano": 0, "ebike": 0 }
-  };
-  
-  // Parse sheet data if using key-value format
-  for (let i = startRow; i < data.length; i++) {
-    const row = data[i];
-    if (row.length >= 2 && row[0] && row[1] !== '') {
-      const keyPath = String(row[0]).trim();
-      const value = parseFloat(row[1]) || 0;
-      
-      // Set nested value
-      setNestedValue(prices, keyPath, value);
-    }
+function getPricelistFromSheet() {
+  // Sheet-Name anpassen falls notwendig
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+
+  if (!sheet) {
+    throw new Error("Sheet 'Sheet1' nicht gefunden");
   }
-  
-  return prices;
+
+  var rawData = sheet.getDataRange().getValues();
+
+  // Erste Zeile (Header) überspringen
+  rawData.shift();
+
+  var pricing = {};
+
+  rawData.forEach(function(row) {
+    // Spalten-Mapping:
+    // A [0] = category (z.B. "catering")
+    // B [1] = key (z.B. "pause_gemischt")
+    // C [2] = label (Beschreibung)
+    // D [3] = price (Preis)
+    // E [4] = unit (Einheit, optional)
+
+    var category = row[0];
+    var key = row[1];
+    var price = row[3];
+
+    // Leere Zeilen überspringen
+    if (!category || !key) return;
+
+    // Kategorie-Objekt erstellen falls nicht vorhanden
+    if (!pricing[category]) {
+      pricing[category] = {};
+    }
+
+    // Preis zuweisen (als Zahl)
+    pricing[category][key] = (typeof price === 'number') ? price : Number(price) || 0;
+  });
+
+  return pricing;
 }
 
 /**
- * Set nested value in object using dot notation path
+ * Test-Funktion zum Debuggen
+ * Ausführen über: Ausführen > Funktion ausführen > testPricelist
  */
-function setNestedValue(obj, path, value) {
-  const keys = path.split('.');
-  let current = obj;
-  
-  for (let i = 0; i < keys.length - 1; i++) {
-    const key = keys[i];
-    if (!current[key] || typeof current[key] !== 'object') {
-      current[key] = {};
-    }
-    current = current[key];
-  }
-  
-  current[keys[keys.length - 1]] = value;
+function testPricelist() {
+  var data = getPricelistFromSheet();
+  Logger.log(JSON.stringify(data, null, 2));
 }
-
