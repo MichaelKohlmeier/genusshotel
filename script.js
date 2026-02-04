@@ -36,10 +36,12 @@
             return;
         }
 
-        const personenanzahl = parseInt(personenanzahlInput?.value) || 4;
+        const personenanzahl = parseInt(personenanzahlInput?.value) || 0;
         let roomText = '';
 
-        if (personenanzahl >= 1 && personenanzahl <= 12) {
+        if (personenanzahl === 0) {
+            roomText = 'Bitte Zimmer auswählen';
+        } else if (personenanzahl >= 1 && personenanzahl <= 12) {
             roomText = '45m² Raum (inkludiert)';
         } else if (personenanzahl >= 13 && personenanzahl <= 20) {
             roomText = '80m² Raum (inkludiert)';
@@ -116,16 +118,16 @@
 
     /**
      * Calculate total price based on selected items using dynamic pricelist
-     * Returns object with brutto, netto, and breakdown by VAT rate
+     * Returns object with brutto, netto, breakdown by VAT rate, and category breakdown
      * Austria: 10% for accommodation/catering, 20% for equipment/activities
      */
     function calculateTotalPrice() {
         if (!window.Pricelist || !window.Pricelist.isLoaded()) {
-            return { brutto: 0, netto: 0, vat10: 0, vat20: 0, naechtigungsabgabe: 0 };
+            return { brutto: 0, netto: 0, vat10: 0, vat20: 0, naechtigungsabgabe: 0, breakdown: {} };
         }
 
         const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
-        const personenanzahl = parseInt(personenanzahlInput?.value) || 4;
+        const personenanzahl = parseInt(personenanzahlInput?.value) || 0;
         const tage = calculateDaysFromDates();
         const naechte = Math.max(0, tage - 1); // Nächte = Tage - 1
 
@@ -133,6 +135,16 @@
         let brutto10 = 0; // 10% VAT: accommodation, catering
         let brutto20 = 0; // 20% VAT: equipment, activities
         let naechtigungsabgabeTotal = 0; // No VAT on this tax
+
+        // Category breakdown for transparency
+        let breakdown = {
+            seminarpaket: 0,
+            naechtigungen: 0,
+            verpflegung: 0,
+            ausstattung: 0,
+            rahmenprogramme: 0,
+            naechtigungsabgabe: 0
+        };
 
         // Calculate additional equipment (20% VAT, applies to both 1-Tag and Mehrtag)
         const equipmentFlipcharts = parseInt(document.querySelector('input[name="equipment_flipcharts"]')?.value) || 0;
@@ -151,93 +163,115 @@
         equipmentTotal += equipmentPresenter * window.Pricelist.getPrice('equipment.presenter') * tage;
         equipmentTotal += equipmentLaptop * window.Pricelist.getPrice('equipment.laptop') * tage;
         brutto20 += equipmentTotal;
+        breakdown.ausstattung += equipmentTotal;
 
         // 1-Tages-Seminar: Fixed price (10% VAT) + equipment
         if (is1Tag) {
             const basePrice = window.Pricelist.getPrice('1tag.base_price');
-            brutto10 = basePrice * personenanzahl;
+            const seminarpaketTotal = basePrice * personenanzahl;
+            brutto10 = seminarpaketTotal;
+            breakdown.seminarpaket = seminarpaketTotal;
 
             const brutto = brutto10 + brutto20;
             const netto10 = brutto10 / 1.10;
             const netto20 = brutto20 / 1.20;
             const netto = netto10 + netto20;
 
-            return { brutto: brutto, netto: netto, vat10: brutto10 - netto10, vat20: brutto20 - netto20, naechtigungsabgabe: 0 };
+            return {
+                brutto: brutto,
+                netto: netto,
+                vat10: brutto10 - netto10,
+                vat20: brutto20 - netto20,
+                naechtigungsabgabe: 0,
+                breakdown: breakdown
+            };
         }
 
         // Mehrtägiges Seminar: Calculate based on selections
-        let cateringPerPerson = 0; // 10% VAT
+        let cateringTotal = 0; // 10% VAT
 
         // Get catering radio buttons (vormittag, nachmittag)
         const cateringVormittag = document.querySelector('input[name="catering_vormittag"]:checked');
         if (cateringVormittag && cateringVormittag.dataset.priceKey) {
-            cateringPerPerson += window.Pricelist.getPrice(cateringVormittag.dataset.priceKey);
+            cateringTotal += window.Pricelist.getPrice(cateringVormittag.dataset.priceKey) * personenanzahl;
         }
 
         const cateringNachmittag = document.querySelector('input[name="catering_nachmittag"]:checked');
         if (cateringNachmittag && cateringNachmittag.dataset.priceKey) {
-            cateringPerPerson += window.Pricelist.getPrice(cateringNachmittag.dataset.priceKey);
+            cateringTotal += window.Pricelist.getPrice(cateringNachmittag.dataset.priceKey) * personenanzahl;
         }
 
         // Get all catering checkboxes (mittagessen only - abendessen is now radio buttons)
         const cateringCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="catering_"]:checked');
         cateringCheckboxes.forEach(function(checkbox) {
             if (checkbox.dataset.priceKey) {
-                cateringPerPerson += window.Pricelist.getPrice(checkbox.dataset.priceKey);
+                cateringTotal += window.Pricelist.getPrice(checkbox.dataset.priceKey) * personenanzahl;
             }
         });
 
         // Get Abendessen radio button (either base or upgrade, mutually exclusive)
         const abendessenSelected = document.querySelector('input[name="catering_abendessen"]:checked');
         if (abendessenSelected && abendessenSelected.dataset.priceKey) {
-            cateringPerPerson += window.Pricelist.getPrice(abendessenSelected.dataset.priceKey);
+            cateringTotal += window.Pricelist.getPrice(abendessenSelected.dataset.priceKey) * personenanzahl;
         }
 
-        brutto10 += cateringPerPerson * personenanzahl;
+        brutto10 += cateringTotal;
+        breakdown.verpflegung = cateringTotal;
 
         // Room costs (10% VAT)
         const zimmerEinzel = parseInt(document.getElementById('zimmer_einzel')?.value) || 0;
         const zimmerDoppel = parseInt(document.getElementById('zimmer_doppel')?.value) || 0;
+        let roomTotal = 0;
 
         if (zimmerEinzel > 0) {
             const singlePrice = window.Pricelist.getPrice('rooms.single_per_night');
-            brutto10 += singlePrice * zimmerEinzel * naechte;
+            roomTotal += singlePrice * zimmerEinzel * naechte;
         }
         if (zimmerDoppel > 0) {
             // Double room price is per person
             const doublePrice = window.Pricelist.getPrice('rooms.double_per_person');
-            brutto10 += doublePrice * zimmerDoppel * 2 * naechte; // *2 for 2 persons per double room
+            roomTotal += doublePrice * zimmerDoppel * 2 * naechte; // *2 for 2 persons per double room
         }
+        brutto10 += roomTotal;
+        breakdown.naechtigungen = roomTotal;
 
         // Nächtigungsabgabe (no VAT - it's a local tax)
         const totalPersonsStaying = zimmerEinzel + (zimmerDoppel * 2);
         const naechtigungsabgabeRate = window.Pricelist.getPrice('rooms.naechtigungsabgabe');
         naechtigungsabgabeTotal = naechtigungsabgabeRate * totalPersonsStaying * naechte;
+        breakdown.naechtigungsabgabe = naechtigungsabgabeTotal;
 
         // Equipment options (20% VAT)
         const raumgarantie = document.getElementById('equipment_raumgarantie');
         if (raumgarantie?.checked && raumgarantie.dataset.priceKey) {
-            brutto20 += window.Pricelist.getPrice(raumgarantie.dataset.priceKey);
+            const price = window.Pricelist.getPrice(raumgarantie.dataset.priceKey);
+            brutto20 += price;
+            breakdown.ausstattung += price;
         }
 
         if (equipmentGruppenraum?.checked && equipmentGruppenraum.dataset.priceKey) {
             const price = window.Pricelist.getPrice(equipmentGruppenraum.dataset.priceKey);
-            brutto20 += price * tage;
+            const total = price * tage;
+            brutto20 += total;
+            breakdown.ausstattung += total;
         }
 
         // Activities (20% VAT) - some are per person, some are flat rate
+        let activitiesTotal = 0;
         const aktivitaetCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="aktivitaet_"]:checked');
         aktivitaetCheckboxes.forEach(function(checkbox) {
             if (checkbox.dataset.priceKey) {
                 const price = window.Pricelist.getPrice(checkbox.dataset.priceKey);
                 // Yoga is flat rate, others are per person
                 if (checkbox.dataset.priceKey === 'activities.yoga') {
-                    brutto20 += price; // Flat rate
+                    activitiesTotal += price; // Flat rate
                 } else {
-                    brutto20 += price * personenanzahl; // Per person
+                    activitiesTotal += price * personenanzahl; // Per person
                 }
             }
         });
+        brutto20 += activitiesTotal;
+        breakdown.rahmenprogramme = activitiesTotal;
 
         // Calculate totals
         const brutto = brutto10 + brutto20 + naechtigungsabgabeTotal;
@@ -250,8 +284,46 @@
             netto: netto,
             vat10: brutto10 - netto10,
             vat20: brutto20 - netto20,
-            naechtigungsabgabe: naechtigungsabgabeTotal
+            naechtigungsabgabe: naechtigungsabgabeTotal,
+            breakdown: breakdown
         };
+    }
+
+    /**
+     * Check if a date is set based on seminar type
+     */
+    function isDateSet() {
+        const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
+
+        if (is1Tag) {
+            return seminarDatumInput && seminarDatumInput.value !== '';
+        } else {
+            return seminarStartInput && seminarStartInput.value !== '' &&
+                   seminarEndeInput && seminarEndeInput.value !== '';
+        }
+    }
+
+    /**
+     * Update Personenanzahl based on room selection (Einzelzimmer + Doppelzimmer*2)
+     */
+    function updatePersonenanzahlFromRooms() {
+        const zimmerEinzel = parseInt(document.getElementById('zimmer_einzel')?.value) || 0;
+        const zimmerDoppel = parseInt(document.getElementById('zimmer_doppel')?.value) || 0;
+
+        const totalPersons = zimmerEinzel + (zimmerDoppel * 2);
+
+        if (personenanzahlInput) {
+            personenanzahlInput.value = totalPersons;
+        }
+        if (personenanzahlSlider) {
+            personenanzahlSlider.value = totalPersons;
+        }
+        if (personenanzahlDisplay) {
+            personenanzahlDisplay.textContent = totalPersons;
+        }
+
+        updateRoomAllocation();
+        updatePriceDisplay();
     }
 
     /**
@@ -259,7 +331,7 @@
      */
     function updatePriceDisplay() {
         const priceData = calculateTotalPrice();
-        const personenanzahl = parseInt(personenanzahlInput?.value) || 4;
+        const personenanzahl = parseInt(personenanzahlInput?.value) || 0;
         const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
 
         // Update 1-Tages package price display
@@ -276,6 +348,12 @@
         const priceSummaryContent = document.getElementById('price-summary-content');
 
         if (priceSummarySection && priceSummaryContent) {
+            // Only show price if a date is set
+            if (!isDateSet()) {
+                priceSummaryContent.innerHTML = '<p style="color: #666;">Bitte wählen Sie ein Datum aus, um den Preis zu berechnen.</p>';
+                return;
+            }
+
             if (priceData.brutto > 0) {
                 priceSummarySection.style.display = 'block';
 
@@ -297,15 +375,51 @@
                     html += '</div>';
                 }
 
-                // Show Nächtigungsabgabe notice for multi-day seminars
-                if (!is1Tag) {
-                    html += '<div style="margin-top: 1em; padding-top: 0.75em; border-top: 1px solid #ddd; font-size: 0.85em; color: #666;">';
-                    html += 'zzgl. € 2,50 Nächtigungsabgabe pro Person/Nacht';
-                    if (priceData.naechtigungsabgabe > 0) {
-                        html += '<br><em>(im Preis bereits enthalten: € ' + priceData.naechtigungsabgabe.toFixed(2) + ')</em>';
-                    }
-                    html += '</div>';
+                // Price breakdown table
+                html += '<div style="margin-top: 1.5em; padding-top: 1em; border-top: 1px solid #ddd;">';
+                html += '<strong style="font-size: 0.9em;">Preisaufstellung:</strong>';
+                html += '<table style="width: 100%; margin-top: 0.5em; font-size: 0.85em; border-collapse: collapse;">';
+
+                const breakdown = priceData.breakdown;
+
+                // 1-Tag: Show Seminarpaket
+                if (is1Tag && breakdown.seminarpaket > 0) {
+                    html += '<tr><td style="padding: 0.3em 0;">Seminarpaket</td><td style="padding: 0.3em 0; text-align: right;">€ ' + breakdown.seminarpaket.toFixed(2) + '</td></tr>';
                 }
+
+                // Mehrtag categories
+                if (!is1Tag) {
+                    if (breakdown.naechtigungen > 0) {
+                        html += '<tr><td style="padding: 0.3em 0;">Nächtigungen</td><td style="padding: 0.3em 0; text-align: right;">€ ' + breakdown.naechtigungen.toFixed(2) + '</td></tr>';
+                    }
+                    if (breakdown.verpflegung > 0) {
+                        html += '<tr><td style="padding: 0.3em 0;">Verpflegung</td><td style="padding: 0.3em 0; text-align: right;">€ ' + breakdown.verpflegung.toFixed(2) + '</td></tr>';
+                    }
+                }
+
+                // Equipment (both 1-Tag and Mehrtag)
+                if (breakdown.ausstattung > 0) {
+                    html += '<tr><td style="padding: 0.3em 0;">Zusatzausstattung</td><td style="padding: 0.3em 0; text-align: right;">€ ' + breakdown.ausstattung.toFixed(2) + '</td></tr>';
+                }
+
+                // Activities (Mehrtag only)
+                if (!is1Tag && breakdown.rahmenprogramme > 0) {
+                    html += '<tr><td style="padding: 0.3em 0;">Rahmenprogramme</td><td style="padding: 0.3em 0; text-align: right;">€ ' + breakdown.rahmenprogramme.toFixed(2) + '</td></tr>';
+                }
+
+                // Nächtigungsabgabe (Mehrtag only)
+                if (!is1Tag && breakdown.naechtigungsabgabe > 0) {
+                    html += '<tr><td style="padding: 0.3em 0;">Nächtigungsabgabe</td><td style="padding: 0.3em 0; text-align: right;">€ ' + breakdown.naechtigungsabgabe.toFixed(2) + '</td></tr>';
+                }
+
+                // Total row
+                html += '<tr style="border-top: 1px solid #ccc; font-weight: 700;">';
+                html += '<td style="padding: 0.5em 0;">Gesamt</td>';
+                html += '<td style="padding: 0.5em 0; text-align: right;">€ ' + priceData.brutto.toFixed(2) + '</td>';
+                html += '</tr>';
+
+                html += '</table>';
+                html += '</div>';
 
                 priceSummaryContent.innerHTML = html;
             } else {
@@ -479,16 +593,16 @@
             seminarEndeInput.addEventListener('change', updatePriceDisplay);
         }
 
-        // Room inputs for price calculation
+        // Room inputs for price calculation and Personenanzahl update
         const zimmerEinzel = document.getElementById('zimmer_einzel');
         const zimmerDoppel = document.getElementById('zimmer_doppel');
         if (zimmerEinzel) {
-            zimmerEinzel.addEventListener('input', updatePriceDisplay);
-            zimmerEinzel.addEventListener('change', updatePriceDisplay);
+            zimmerEinzel.addEventListener('input', updatePersonenanzahlFromRooms);
+            zimmerEinzel.addEventListener('change', updatePersonenanzahlFromRooms);
         }
         if (zimmerDoppel) {
-            zimmerDoppel.addEventListener('input', updatePriceDisplay);
-            zimmerDoppel.addEventListener('change', updatePriceDisplay);
+            zimmerDoppel.addEventListener('input', updatePersonenanzahlFromRooms);
+            zimmerDoppel.addEventListener('change', updatePersonenanzahlFromRooms);
         }
 
         // Equipment inputs for price calculation
