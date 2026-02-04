@@ -86,9 +86,9 @@
             
             <div class="en-input-cnt en-griditem slider-container" data-en-griditem-medium="2">
                 <label class="en-format-small" for="personenanzahl">Personenanzahl</label>
-                <input type="range" name="personenanzahl_slider" id="personenanzahl_slider" min="4" max="100" value="4" step="1">
-                <div class="slider-value-display" id="personenanzahl_display">4</div>
-                <input type="hidden" name="personenanzahl" id="personenanzahl" value="4">
+                <input type="range" name="personenanzahl_slider" id="personenanzahl_slider" min="0" max="100" value="0" step="1">
+                <div class="slider-value-display" id="personenanzahl_display">0</div>
+                <input type="hidden" name="personenanzahl" id="personenanzahl" value="0">
             </div>
             
             <!-- Room fields - only visible for Mehrtägiges Seminar -->
@@ -108,7 +108,7 @@
                     <!-- Room Allocation Display -->
                     <div class="en-griditem en-space-large" id="room-allocation-display">
                         <div class="en-format-small" style="padding: 1em; background-color: #dddfd6; border-radius: 0.25rem;">
-                            <strong>Vorgeschlagener Seminarraum:</strong> <span id="room-suggestion">45m² Raum (inkludiert)</span>
+                            <strong>Vorgeschlagener Seminarraum:</strong> <span id="room-suggestion">Bitte Zimmer auswählen</span>
                         </div>
                     </div>
                     
@@ -396,7 +396,7 @@
                     <div class="en-format-small" style="padding: 1.5em; background-color: #f5f5f0; border: 2px solid #e7d0cb; border-radius: 0.5rem;">
                         <h4 class="en-format-h5" style="margin-bottom: 1em;">Preisvorschlag</h4>
                         <div id="price-summary-content">
-                            <p>Berechne Preis...</p>
+                            <p style="color: #666;">Bitte wählen Sie ein Datum aus, um den Preis zu berechnen.</p>
                         </div>
                     </div>
                 </div>
