@@ -1088,25 +1088,54 @@ input[type="range"]::-moz-range-thumb {
     display: block;
 }
 
+/* Tablet and smaller screens */
 @media screen and (max-width: 50em) {
     .tab-navigation {
         flex-direction: column;
         gap: 0;
         border-bottom: none;
+        background-color: #f8f7f5;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 1px solid #e0ddd8;
     }
 
     .tab-button {
         width: 100%;
         text-align: left;
-        padding: 1rem;
+        padding: 1rem 1.25rem;
         border-bottom: 1px solid #e0ddd8;
         margin-bottom: 0;
+        border-radius: 0;
+        font-size: 0.8125rem;
+    }
+
+    .tab-button:last-child {
+        border-bottom: none;
     }
 
     .tab-button.active {
-        background-color: #f8f7f5;
+        background-color: #fff;
         border-left: 4px solid #e7d0cb;
         border-bottom: 1px solid #e0ddd8;
+        color: #bdadad;
+    }
+
+    .tab-button:hover {
+        background-color: #fff;
+    }
+}
+
+/* Mobile phones */
+@media screen and (max-width: 33.75em) {
+    .tab-navigation {
+        margin-bottom: 1rem;
+    }
+
+    .tab-button {
+        padding: 0.875rem 1rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.01em;
     }
 }
 
