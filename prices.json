@@ -10,7 +10,9 @@
     "mittagessen_base": 34.00,
     "mittagessen_getraenke": 5.00,
     "abendessen_base": 52.00,
-    "abendessen_steak": 45.00
+    "abendessen_steak": 45.00,
+    "genuss_package": 60.00,
+    "hochgenuss_package": 77.00
   },
   "rooms": {
     "single_per_night": 125.00,

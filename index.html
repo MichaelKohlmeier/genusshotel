@@ -220,81 +220,41 @@
                         <div class="form-section form-section--catering">
                             <h3 class="en-griditem en-format-h5 en-space-large">Verpflegung</h3>
 
-                            <!-- Fixed items that cannot be deselected -->
-                            <div class="en-griditem" style="margin-bottom: 1.5em; padding: 1em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
-                                <p class="en-format-small" style="margin-bottom: 0.5em;"><strong>Immer inkludiert (fix):</strong></p>
-                                <ul style="margin-left: 1.5em; font-size: 0.9em;">
-                                    <li>Nächtigung inkl. Genießerfrühstück</li>
-                                    <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb & Seminarraumnutzung</li>
-                                </ul>
-                            </div>
+                            <p class="en-griditem en-format-small" style="margin-bottom: 1.5em;">Wählen Sie Ihr Verpflegungspaket:</p>
 
-                            <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">1. Pausenverpflegung</h4>
-
-                            <div class="en-griditem" style="margin-bottom: 1.5em;">
-                                <label class="en-format-small" style="display: block; margin-bottom: 0.75em; font-weight: 700;">Vormittags-Pause:</label>
-                                <div style="display: flex; flex-direction: column; gap: 0.5em;">
-                                    <div>
-                                        <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_gemischt" data-price-key="catering.pause_gemischt" checked>
-                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_gemischt">Genusspause pikant & süß gemischt</label>
-                                    </div>
-                                    <div>
-                                        <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_pikant" data-price-key="catering.pause_pikant">
-                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_pikant">Genusspause pikant</label>
-                                    </div>
-                                    <div>
-                                        <input class="en-replace" type="radio" name="catering_vormittag" id="catering_vormittag_suess" data-price-key="catering.pause_suess">
-                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_vormittag_suess">Genusspause süß</label>
-                                    </div>
+                            <!-- Package Selection -->
+                            <div class="en-griditem package-selection">
+                                <!-- GENUSS Package -->
+                                <div class="package-option">
+                                    <input class="en-replace" type="radio" name="verpflegung_package" id="package_genuss" value="genuss" data-price-key="catering.genuss_package" checked>
+                                    <label class="package-card" for="package_genuss">
+                                        <h4 class="package-title">GENUSS</h4>
+                                        <ul class="package-features">
+                                            <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb & Seminarraumnutzung</li>
+                                            <li>Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet</li>
+                                        </ul>
+                                        <div class="package-price">
+                                            <span class="price-netto">Netto € 52,58</span>
+                                            <span class="price-brutto">Brutto € 60,00 pro Person</span>
+                                        </div>
+                                    </label>
                                 </div>
-                            </div>
 
-                            <div class="en-griditem" style="margin-bottom: 1.5em;">
-                                <label class="en-format-small" style="display: block; margin-bottom: 0.75em; font-weight: 700;">Nachmittags-Pause:</label>
-                                <div style="display: flex; flex-direction: column; gap: 0.5em;">
-                                    <div>
-                                        <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_gemischt" data-price-key="catering.pause_gemischt" checked>
-                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_gemischt">Genusspause pikant & süß gemischt</label>
-                                    </div>
-                                    <div>
-                                        <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_pikant" data-price-key="catering.pause_pikant">
-                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_pikant">Genusspause pikant</label>
-                                    </div>
-                                    <div>
-                                        <input class="en-replace" type="radio" name="catering_nachmittag" id="catering_nachmittag_suess" data-price-key="catering.pause_suess">
-                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_nachmittag_suess">Genusspause süß</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">2. Mittagessen</h4>
-
-                            <div class="en-griditem">
-                                <label class="en-format-small" for="catering_mittagessen">
-                                    <input type="checkbox" name="catering_mittagessen" id="catering_mittagessen" data-price-key="catering.mittagessen_base" checked>
-                                    Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet
-                                </label>
-                            </div>
-
-                            <div class="en-griditem">
-                                <label class="en-format-small" for="catering_mittagessen_getraenke">
-                                    <input type="checkbox" name="catering_mittagessen_getraenke" id="catering_mittagessen_getraenke" data-price-key="catering.mittagessen_getraenke" checked>
-                                    Unlimitiert Alkoholfreie Getränke zum Mittagessen
-                                </label>
-                            </div>
-
-                            <h4 class="en-griditem en-format-h5" style="margin-top: 1.5em; margin-bottom: 0.5em;">3. Abendessen</h4>
-
-                            <div class="en-griditem">
-                                <div style="display: flex; flex-direction: column; gap: 0.5em;">
-                                    <div>
-                                        <input class="en-replace" type="radio" name="catering_abendessen" id="catering_abendessen_base" data-price-key="catering.abendessen_base" value="base" checked>
-                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_abendessen_base">Abendessen, 4-Gang-Wahl-Menü plus Salat- und Käse vom Buffet</label>
-                                    </div>
-                                    <div>
-                                        <input class="en-replace" type="radio" name="catering_abendessen" id="catering_abendessen_upgrade" data-price-key="catering.abendessen_steak" value="upgrade">
-                                        <label class="en-replacement en-replacement--radio en-format-small" for="catering_abendessen_upgrade">Abendessen inkl. DRY AGED Starzenberger Steak</label>
-                                    </div>
+                                <!-- HOCHGENUSS Package -->
+                                <div class="package-option">
+                                    <input class="en-replace" type="radio" name="verpflegung_package" id="package_hochgenuss" value="hochgenuss" data-price-key="catering.hochgenuss_package">
+                                    <label class="package-card" for="package_hochgenuss">
+                                        <h4 class="package-title">HOCHGENUSS</h4>
+                                        <ul class="package-features">
+                                            <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb & Seminarraumnutzung</li>
+                                            <li>Vormittag-Genusspause pikant</li>
+                                            <li>Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet inkl. alkoholfreiem Tischbuffet zum Mittagessen</li>
+                                        </ul>
+                                        <div class="package-price">
+                                            <span class="price-netto">Netto € 68,86</span>
+                                            <span class="price-brutto">Brutto € 77,00 pro Person</span>
+                                        </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>

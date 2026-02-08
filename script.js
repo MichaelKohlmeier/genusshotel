@@ -226,32 +226,13 @@
             };
         }
 
-        // Mehrtägiges Seminar: Calculate based on selections
+        // Mehrtägiges Seminar: Calculate based on selected package
         let cateringTotal = 0; // 10% VAT
 
-        // Get catering radio buttons (vormittag, nachmittag)
-        const cateringVormittag = document.querySelector('input[name="catering_vormittag"]:checked');
-        if (cateringVormittag && cateringVormittag.dataset.priceKey) {
-            cateringTotal += window.Pricelist.getPrice(cateringVormittag.dataset.priceKey) * personenanzahl;
-        }
-
-        const cateringNachmittag = document.querySelector('input[name="catering_nachmittag"]:checked');
-        if (cateringNachmittag && cateringNachmittag.dataset.priceKey) {
-            cateringTotal += window.Pricelist.getPrice(cateringNachmittag.dataset.priceKey) * personenanzahl;
-        }
-
-        // Get all catering checkboxes (mittagessen only - abendessen is now radio buttons)
-        const cateringCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="catering_"]:checked');
-        cateringCheckboxes.forEach(function(checkbox) {
-            if (checkbox.dataset.priceKey) {
-                cateringTotal += window.Pricelist.getPrice(checkbox.dataset.priceKey) * personenanzahl;
-            }
-        });
-
-        // Get Abendessen radio button (either base or upgrade, mutually exclusive)
-        const abendessenSelected = document.querySelector('input[name="catering_abendessen"]:checked');
-        if (abendessenSelected && abendessenSelected.dataset.priceKey) {
-            cateringTotal += window.Pricelist.getPrice(abendessenSelected.dataset.priceKey) * personenanzahl;
+        // Get selected verpflegung package (GENUSS or HOCHGENUSS)
+        const verpflegungPackage = document.querySelector('input[name="verpflegung_package"]:checked');
+        if (verpflegungPackage && verpflegungPackage.dataset.priceKey) {
+            cateringTotal = window.Pricelist.getPrice(verpflegungPackage.dataset.priceKey) * personenanzahl;
         }
 
         brutto10 += cateringTotal;
@@ -606,9 +587,9 @@
             updateRoomAllocation(); // Initial calculation
         }
 
-        // Abendessen radio button handler
-        const abendessenRadios = document.querySelectorAll('input[name="catering_abendessen"]');
-        abendessenRadios.forEach(function(radio) {
+        // Verpflegung package radio button handler
+        const verpflegungRadios = document.querySelectorAll('input[name="verpflegung_package"]');
+        verpflegungRadios.forEach(function(radio) {
             radio.addEventListener('change', updatePriceDisplay);
         });
 
@@ -618,8 +599,8 @@
             checkbox.addEventListener('change', updatePriceDisplay);
         });
 
-        // Price calculation on radio button change
-        const allRadios = document.querySelectorAll('input[type="radio"][name^="catering_"]');
+        // Price calculation on radio button change (activities, etc.)
+        const allRadios = document.querySelectorAll('input[type="radio"][name^="aktivitaet_"]');
         allRadios.forEach(function(radio) {
             radio.addEventListener('change', updatePriceDisplay);
         });
