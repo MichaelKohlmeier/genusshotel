@@ -1193,6 +1193,14 @@ input[type="range"]::-moz-range-thumb {
     color: #8b7a6b;
 }
 
+.package-subtitle {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #8b7a6b;
+    margin: 0.5rem 0;
+    text-align: left;
+}
+
 .package-features {
     list-style: none;
     padding: 0;

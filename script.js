@@ -230,9 +230,10 @@
         let cateringTotal = 0; // 10% VAT
 
         // Get selected verpflegung package (GENUSS or HOCHGENUSS)
+        // Price is per person per seminar day
         const verpflegungPackage = document.querySelector('input[name="verpflegung_package"]:checked');
         if (verpflegungPackage && verpflegungPackage.dataset.priceKey) {
-            cateringTotal = window.Pricelist.getPrice(verpflegungPackage.dataset.priceKey) * personenanzahl;
+            cateringTotal = window.Pricelist.getPrice(verpflegungPackage.dataset.priceKey) * personenanzahl * tage;
         }
 
         brutto10 += cateringTotal;
