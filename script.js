@@ -644,11 +644,211 @@
 
         // Initial price calculation
         updatePriceDisplay();
-        
+
         // Initialize slider display
         if (personenanzahlDisplay && personenanzahlSlider) {
             personenanzahlDisplay.textContent = personenanzahlSlider.value;
         }
+
+        // Form submission handler
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', handleFormSubmit);
+        }
+    }
+
+    /**
+     * Collect all form data into a structured object
+     */
+    function collectFormData() {
+        const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
+        const priceData = calculateTotalPrice();
+
+        const data = {
+            // Seminar type
+            seminar_typ: is1Tag ? '1-Tages-Seminar' : 'Mehrtägiges Seminar',
+
+            // Dates
+            datum: is1Tag
+                ? (seminarDatumInput?.value || '')
+                : ((seminarStartInput?.value || '') + ' bis ' + (seminarEndeInput?.value || '')),
+
+            // Participants
+            personenanzahl: personenanzahlInput?.value || '0',
+
+            // Rooms (only for multi-day)
+            zimmer_einzel: document.getElementById('zimmer_einzel')?.value || '0',
+            zimmer_doppel: document.getElementById('zimmer_doppel')?.value || '0',
+
+            // Room setup
+            sitzordnung: document.querySelector('input[name="room_setup"]:checked')?.value || '',
+
+            // Verpflegung package
+            verpflegung: document.querySelector('input[name="verpflegung_package"]:checked')?.value || '',
+
+            // Equipment
+            equipment_flipcharts: document.querySelector('input[name="equipment_flipcharts"]')?.value || '0',
+            equipment_pinnwand: document.querySelector('input[name="equipment_pinnwand"]')?.value || '0',
+            equipment_displayboard: document.querySelector('input[name="equipment_displayboard"]')?.value || '0',
+            equipment_funkmikrofon: document.querySelector('input[name="equipment_funkmikrofon"]')?.value || '0',
+            equipment_presenter: document.querySelector('input[name="equipment_presenter"]')?.value || '0',
+            equipment_laptop: document.querySelector('input[name="equipment_laptop"]')?.value || '0',
+            equipment_sonstiges: document.querySelector('textarea[name="equipment_sonstiges"]')?.value || '',
+
+            // Activities
+            aktivitaeten: [],
+
+            // Contact info
+            anrede: document.querySelector('input[name="anrede"]:checked')?.value === 'frau' ? 'Frau' : 'Herr',
+            vorname: document.getElementById('vorname')?.value || '',
+            nachname: document.getElementById('nachname')?.value || '',
+            email: document.getElementById('email')?.value || '',
+            telefon: document.getElementById('telefon')?.value || '',
+            firma: document.getElementById('firma')?.value || '',
+            nachricht: document.getElementById('nachricht')?.value || '',
+
+            // Price
+            preis_brutto: priceData.brutto.toFixed(2),
+            preis_netto: priceData.netto.toFixed(2),
+            preis_pro_person: priceData.brutto > 0 && personenanzahlInput?.value > 0
+                ? (priceData.brutto / parseInt(personenanzahlInput.value)).toFixed(2)
+                : '0.00'
+        };
+
+        // Collect selected activities
+        const activityCheckboxes = document.querySelectorAll('input[name^="aktivitaet_"]:checked');
+        activityCheckboxes.forEach(function(checkbox) {
+            const label = document.querySelector('label[for="' + checkbox.id + '"]');
+            if (label) {
+                // Get just the activity name without the price
+                const text = label.textContent.trim().split('(')[0].trim();
+                data.aktivitaeten.push(text);
+            }
+        });
+
+        return data;
+    }
+
+    /**
+     * Show loading overlay
+     */
+    function showLoadingOverlay() {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+        }
+    }
+
+    /**
+     * Hide loading overlay
+     */
+    function hideLoadingOverlay() {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+    }
+
+    /**
+     * Show success message
+     */
+    function showSuccessMessage() {
+        const modal = document.getElementById('success-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    /**
+     * Show error message
+     */
+    function showErrorMessage(message) {
+        const modal = document.getElementById('error-modal');
+        const errorText = document.getElementById('error-message-text');
+        if (modal) {
+            if (errorText) {
+                errorText.textContent = message || 'Ein unbekannter Fehler ist aufgetreten.';
+            }
+            modal.style.display = 'flex';
+        } else {
+            alert('Fehler: ' + (message || 'Ein unbekannter Fehler ist aufgetreten.'));
+        }
+    }
+
+    /**
+     * Close modal
+     */
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Expose closeModal globally for onclick handlers
+    window.closeModal = closeModal;
+
+    /**
+     * Handle form submission
+     */
+    function handleFormSubmit(e) {
+        e.preventDefault();
+
+        // Basic validation
+        const vorname = document.getElementById('vorname')?.value;
+        const nachname = document.getElementById('nachname')?.value;
+        const email = document.getElementById('email')?.value;
+
+        if (!vorname || !nachname || !email) {
+            showErrorMessage('Bitte füllen Sie alle Pflichtfelder aus (Vorname, Nachname, E-Mail).');
+            return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showErrorMessage('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+            return;
+        }
+
+        // Collect form data
+        const formData = collectFormData();
+
+        // Show loading
+        showLoadingOverlay();
+
+        // Get submission URL from config
+        const submissionUrl = window.SeminarFormConfig?.submissionUrl;
+        if (!submissionUrl) {
+            hideLoadingOverlay();
+            showErrorMessage('Konfigurationsfehler: Keine Submission-URL definiert.');
+            return;
+        }
+
+        // Debug: Log form data and URL
+        console.log('Submitting to:', submissionUrl);
+        console.log('Form data:', JSON.stringify(formData, null, 2));
+
+        // Submit to Google Apps Script
+        fetch(submissionUrl, {
+            method: 'POST',
+            mode: 'no-cors', // Required for Apps Script cross-origin
+            headers: {
+                'Content-Type': 'text/plain', // Apps Script works better with text/plain
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(function(response) {
+            console.log('Response received:', response);
+            // With no-cors, we can't read the response, so assume success
+            hideLoadingOverlay();
+            showSuccessMessage();
+        })
+        .catch(function(error) {
+            console.error('Submission error:', error);
+            hideLoadingOverlay();
+            showErrorMessage('Fehler beim Senden der Anfrage. Bitte versuchen Sie es erneut.');
+        });
     }
 
     // Initialize when DOM is ready
