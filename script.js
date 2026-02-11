@@ -369,14 +369,22 @@
         const priceSummaryContent = document.getElementById('price-summary-content');
 
         if (priceSummarySection && priceSummaryContent) {
+            // Always show the section
+            priceSummarySection.style.display = 'block';
+
             // Only show price if a date is set
             if (!isDateSet()) {
                 priceSummaryContent.innerHTML = '<p style="color: #666;">Bitte wählen Sie ein Datum aus, um den Preis zu berechnen.</p>';
                 return;
             }
 
+            // Show message if personenanzahl is 0
+            if (personenanzahl === 0) {
+                priceSummaryContent.innerHTML = '<p style="color: #666;">Bitte wählen Sie die Personenanzahl aus.</p>';
+                return;
+            }
+
             if (priceData.brutto > 0) {
-                priceSummarySection.style.display = 'block';
 
                 let html = '<div style="margin-bottom: 0.5em;">';
                 html += '<strong>Gesamtpreis (brutto):</strong> <span style="font-size: 1.5em; font-weight: 700; color: #bdadad;">€ ' + priceData.brutto.toFixed(2) + '</span>';
@@ -444,7 +452,7 @@
 
                 priceSummaryContent.innerHTML = html;
             } else {
-                priceSummarySection.style.display = 'none';
+                priceSummaryContent.innerHTML = '<p style="color: #666;">Preis wird berechnet...</p>';
             }
         }
     }

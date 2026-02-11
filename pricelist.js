@@ -78,10 +78,9 @@
                 return response.json();
             })
             .then(function(data) {
-                // Convert flat key-value format to nested structure
-                const convertedData = convertFlatToNested(data);
-                saveToCache(convertedData);
-                return convertedData;
+                // Data is already in nested format from Apps Script
+                saveToCache(data);
+                return data;
             });
     }
 
