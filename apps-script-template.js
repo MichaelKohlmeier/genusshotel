@@ -216,13 +216,16 @@ function formatSitzordnung(value) {
 }
 
 /**
- * Format Verpflegung package for display
+ * Format Verpflegung for display
+ * Accepts either a legacy single value ('genuss'/'hochgenuss') or a per-day formatted string
  */
 function formatVerpflegung(value) {
   var mapping = {
     'genuss': 'GENUSS Paket',
-    'hochgenuss': 'HOCHGENUSS Paket'
+    'hochgenuss': 'HOCHGENUSS Paket',
+    'saftbar': 'Nur Saftbar'
   };
+  // If it's a simple value, map it; otherwise return the per-day string as-is
   return mapping[value] || value || '';
 }
 

@@ -96,18 +96,121 @@
     }
 
     /**
-     * Handle Mittagessen upgrade logic
-     * If upgrade is checked, replace base price with upgrade price
+     * Format a Date object to German locale string like "Mo, 06.04.2026"
      */
-    function handleMittagessenUpgrade() {
-        // Note: Currently no upgrade for Mittagessen, but keeping structure for future
-        // The Getränke is an add-on, not a replacement
+    function formatDateGerman(date) {
+        const days = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+        const dayName = days[date.getDay()];
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return dayName + ', ' + dd + '.' + mm + '.' + yyyy;
     }
 
     /**
-     * Handle Abendessen selection (now using radio buttons)
-     * Logic is handled in calculateTotalPrice - only one option can be selected
+     * Get day label based on index and total days
      */
+    function getDayLabel(index, totalDays) {
+        if (index === 0) return 'Anreisetag';
+        if (index === totalDays - 1) return 'Abreisetag';
+        return 'Seminartag ' + index;
+    }
+
+    /**
+     * Generate per-day Verpflegung selection UI
+     */
+    function generateVerpflegungDays() {
+        const container = document.getElementById('verpflegung-days-container');
+        if (!container) return;
+
+        const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
+        if (is1Tag) {
+            container.innerHTML = '';
+            return;
+        }
+
+        if (!seminarStartInput || !seminarEndeInput || !seminarStartInput.value || !seminarEndeInput.value) {
+            container.innerHTML = '<p class="en-format-small" style="color: #666;">Bitte wählen Sie zuerst ein Datum aus.</p>';
+            return;
+        }
+
+        const startDate = new Date(seminarStartInput.value);
+        const endDate = new Date(seminarEndeInput.value);
+
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime()) || endDate < startDate) {
+            container.innerHTML = '<p class="en-format-small" style="color: #666;">Bitte wählen Sie ein gültiges Datum aus.</p>';
+            return;
+        }
+
+        const tage = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+        // Save current selections before regenerating
+        var previousSelections = {};
+        var existingRadios = container.querySelectorAll('input[type="radio"]:checked');
+        existingRadios.forEach(function(radio) {
+            previousSelections[radio.name] = radio.value;
+        });
+
+        var html = '';
+        for (var i = 0; i < tage; i++) {
+            var currentDate = new Date(startDate);
+            currentDate.setDate(startDate.getDate() + i);
+            var label = getDayLabel(i, tage);
+            var dateStr = formatDateGerman(currentDate);
+            var isDeparture = (i === tage - 1 && tage > 1);
+            var radioName = 'verpflegung_day_' + i;
+            var prevValue = previousSelections[radioName] || 'genuss';
+
+            html += '<div class="verpflegung-day">';
+            html += '<div class="verpflegung-day-header">';
+            html += '<span class="day-label">' + label + '</span>';
+            html += '<span class="day-date">' + dateStr + '</span>';
+            if (isDeparture) {
+                html += '<span class="day-note">ohne Abendessen</span>';
+            }
+            html += '</div>';
+            html += '<div class="verpflegung-day-options">';
+
+            html += '<label class="verpflegung-day-option">';
+            html += '<input type="radio" name="' + radioName + '" value="saftbar" data-price-key="catering.saftbar"' + (prevValue === 'saftbar' ? ' checked' : '') + '>';
+            html += '<span class="option-label">Nur Saftbar</span>';
+            html += '</label>';
+
+            html += '<label class="verpflegung-day-option">';
+            html += '<input type="radio" name="' + radioName + '" value="genuss" data-price-key="catering.genuss_package"' + (prevValue === 'genuss' ? ' checked' : '') + '>';
+            html += '<span class="option-label">GENUSS</span>';
+            html += '</label>';
+
+            html += '<label class="verpflegung-day-option">';
+            html += '<input type="radio" name="' + radioName + '" value="hochgenuss" data-price-key="catering.hochgenuss_package"' + (prevValue === 'hochgenuss' ? ' checked' : '') + '>';
+            html += '<span class="option-label">HOCHGENUSS</span>';
+            html += '</label>';
+
+            html += '</div>';
+            html += '</div>';
+        }
+
+        container.innerHTML = html;
+
+        // Attach change listeners to new radio buttons
+        var newRadios = container.querySelectorAll('input[type="radio"]');
+        newRadios.forEach(function(radio) {
+            radio.addEventListener('change', updatePriceDisplay);
+        });
+    }
+
+    /**
+     * Set all Verpflegung days to a specific package
+     */
+    function setAllVerpflegungDays(packageValue) {
+        var container = document.getElementById('verpflegung-days-container');
+        if (!container) return;
+        var radios = container.querySelectorAll('input[type="radio"][value="' + packageValue + '"]');
+        radios.forEach(function(radio) {
+            radio.checked = true;
+        });
+        updatePriceDisplay();
+    }
 
     /**
      * Calculate number of days from start and end dates (inclusive)
@@ -226,14 +329,15 @@
             };
         }
 
-        // Mehrtägiges Seminar: Calculate based on selected package
+        // Mehrtägiges Seminar: Calculate based on per-day package selections
         let cateringTotal = 0; // 10% VAT
 
-        // Get selected verpflegung package (GENUSS or HOCHGENUSS)
-        // Price is per person per seminar day
-        const verpflegungPackage = document.querySelector('input[name="verpflegung_package"]:checked');
-        if (verpflegungPackage && verpflegungPackage.dataset.priceKey) {
-            cateringTotal = window.Pricelist.getPrice(verpflegungPackage.dataset.priceKey) * personenanzahl * tage;
+        // Sum up per-day verpflegung selections
+        for (var dayIdx = 0; dayIdx < tage; dayIdx++) {
+            var dayRadio = document.querySelector('input[name="verpflegung_day_' + dayIdx + '"]:checked');
+            if (dayRadio && dayRadio.dataset.priceKey) {
+                cateringTotal += window.Pricelist.getPrice(dayRadio.dataset.priceKey) * personenanzahl;
+            }
         }
 
         brutto10 += cateringTotal;
@@ -534,7 +638,8 @@
             priceSummarySection.style.display = 'block';
         }
 
-        // Update price calculation
+        // Regenerate per-day verpflegung and update price
+        generateVerpflegungDays();
         updatePriceDisplay();
     }
 
@@ -596,11 +701,16 @@
             updateRoomAllocation(); // Initial calculation
         }
 
-        // Verpflegung package radio button handler
-        const verpflegungRadios = document.querySelectorAll('input[name="verpflegung_package"]');
-        verpflegungRadios.forEach(function(radio) {
-            radio.addEventListener('change', updatePriceDisplay);
+        // "Set all days" buttons for Verpflegung
+        var setAllButtons = document.querySelectorAll('.btn-set-all');
+        setAllButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                setAllVerpflegungDays(btn.dataset.package);
+            });
         });
+
+        // Generate initial per-day Verpflegung UI
+        generateVerpflegungDays();
 
         // Price calculation on any checkbox change
         const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -624,11 +734,15 @@
                 if (seminarEndeInput && seminarStartInput.value) {
                     seminarEndeInput.min = seminarStartInput.value;
                 }
+                generateVerpflegungDays();
                 updatePriceDisplay();
             });
         }
         if (seminarEndeInput) {
-            seminarEndeInput.addEventListener('change', updatePriceDisplay);
+            seminarEndeInput.addEventListener('change', function() {
+                generateVerpflegungDays();
+                updatePriceDisplay();
+            });
         }
 
         // Room inputs for price calculation and Personenanzahl update
@@ -666,6 +780,35 @@
     }
 
     /**
+     * Collect per-day verpflegung selections as a formatted string
+     */
+    function collectVerpflegungPerDay() {
+        const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
+        if (is1Tag) return '';
+
+        const tage = calculateDaysFromDates();
+        var parts = [];
+        var packageNames = { saftbar: 'Nur Saftbar', genuss: 'GENUSS', hochgenuss: 'HOCHGENUSS' };
+
+        for (var i = 0; i < tage; i++) {
+            var radio = document.querySelector('input[name="verpflegung_day_' + i + '"]:checked');
+            if (radio) {
+                var startDate = new Date(seminarStartInput.value);
+                startDate.setDate(startDate.getDate() + i);
+                var label = getDayLabel(i, tage);
+                var dateStr = formatDateGerman(startDate);
+                var isDeparture = (i === tage - 1 && tage > 1);
+                var pkgName = packageNames[radio.value] || radio.value;
+                if (isDeparture && radio.value !== 'saftbar') {
+                    pkgName += ' (ohne Abendessen)';
+                }
+                parts.push(label + ' (' + dateStr + '): ' + pkgName);
+            }
+        }
+        return parts.join('; ');
+    }
+
+    /**
      * Collect all form data into a structured object
      */
     function collectFormData() {
@@ -691,8 +834,8 @@
             // Room setup
             sitzordnung: document.querySelector('input[name="room_setup"]:checked')?.value || '',
 
-            // Verpflegung package
-            verpflegung: document.querySelector('input[name="verpflegung_package"]:checked')?.value || '',
+            // Verpflegung per day
+            verpflegung: collectVerpflegungPerDay(),
 
             // Equipment
             equipment_flipcharts: document.querySelector('input[name="equipment_flipcharts"]')?.value || '0',
