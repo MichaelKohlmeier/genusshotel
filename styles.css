@@ -984,6 +984,22 @@ input[type="range"]::-moz-range-thumb {
     margin-bottom: 0.5rem;
 }
 
+/* Included items - larger text */
+.equipment-included {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+/* Zusatzausstattung label - smaller */
+.equipment-zusatz-label {
+    font-size: 0.8em;
+    color: #666;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
 .equipment-list {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -992,7 +1008,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .equipment-item {
-    font-size: 0.9em;
+    font-size: 0.8em;
     color: #333;
 }
 
@@ -1039,6 +1055,13 @@ input[type="range"]::-moz-range-thumb {
 /* ============================================
    TAB NAVIGATION
    ============================================ */
+
+/* Seminar type header - connects to tabs below */
+.seminar-type-header {
+    margin-bottom: 0;
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
 
 .tab-navigation {
     display: flex;

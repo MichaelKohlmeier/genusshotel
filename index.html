@@ -33,12 +33,45 @@
 
     <div class="en-content">
         <form class="en-grid en-form" method="post" action="#">
-            <h1 class="en-griditem en-format-h2 en-format-centered" style="grid-column: 1 / -1;">Seminar Anfrage</h1>
+            <h1 class="en-griditem en-format-h2 en-format-centered" style="grid-column: 1 / -1; font-family: Avenir, sans-serif;">Seminar Anfrage</h1>
 
             <!-- Left Column: Form Sections -->
             <div class="form-column-left">
 
-                <!-- Tab Navigation -->
+                <!-- Always Visible: Seminar Type + Date Selection -->
+                <div class="form-section form-section--basic seminar-type-header">
+                    <h3 class="en-griditem en-format-h5">Seminar-Typ</h3>
+
+                    <div class="en-griditem">
+                        <input class="en-replace" type="radio" name="seminar_typ" id="seminar_1tag" value="1tag" required checked>
+                        <label class="en-replacement en-replacement--radio en-format-small" for="seminar_1tag">1-Tages-Seminar</label>
+
+                        <input class="en-replace" type="radio" name="seminar_typ" id="seminar_mehrtag" value="mehrtag" required>
+                        <label class="en-replacement en-replacement--radio en-format-small" for="seminar_mehrtag">Mehrtägiges Seminar</label>
+                    </div>
+
+                    <!-- Date Selection: Single date for 1-Tages-Seminar -->
+                    <div id="date_single_section" class="en-griditem" style="display: block;">
+                        <div class="en-input-cnt" data-en-griditem-medium="2">
+                            <label class="en-format-small" for="seminar_datum">Datum</label>
+                            <input class="en-input" type="date" name="seminar_datum" id="seminar_datum" required>
+                        </div>
+                    </div>
+
+                    <!-- Date Selection: Start and End dates for Mehrtägiges Seminar -->
+                    <div id="date_range_section" class="en-griditem" style="display: none;">
+                        <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                            <label class="en-format-small" for="seminar_start">Von</label>
+                            <input class="en-input" type="date" name="seminar_start" id="seminar_start">
+                        </div>
+                        <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
+                            <label class="en-format-small" for="seminar_ende">Bis</label>
+                            <input class="en-input" type="date" name="seminar_ende" id="seminar_ende">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation - below seminar type selection -->
                 <div class="tab-navigation">
                     <button type="button" class="tab-button active" data-tab="tab-seminar">Seminar-Typ</button>
                     <button type="button" class="tab-button" data-tab="tab-ausstattung">Sitzordnung & Ausstattung</button>
@@ -49,48 +82,19 @@
                 <!-- Tab Contents -->
                 <div class="tab-contents">
 
-                    <!-- Tab 1: Seminar-Typ -->
+                    <!-- Tab 1: Seminar-Typ Details -->
                     <div class="tab-content active" id="tab-seminar">
                         <div class="form-section form-section--basic">
-                            <h3 class="en-griditem en-format-h5 en-space-large">Seminar-Typ</h3>
-
-                            <div class="en-griditem">
-                                <input class="en-replace" type="radio" name="seminar_typ" id="seminar_1tag" value="1tag" required checked>
-                                <label class="en-replacement en-replacement--radio en-format-small" for="seminar_1tag">1-Tages-Seminar</label>
-
-                                <input class="en-replace" type="radio" name="seminar_typ" id="seminar_mehrtag" value="mehrtag" required>
-                                <label class="en-replacement en-replacement--radio en-format-small" for="seminar_mehrtag">Mehrtägiges Seminar</label>
-                            </div>
-
-                            <!-- Date Selection: Single date for 1-Tages-Seminar -->
-                            <div id="date_single_section" class="en-griditem" style="display: block;">
-                                <div class="en-input-cnt" data-en-griditem-medium="2">
-                                    <label class="en-format-small" for="seminar_datum">Datum</label>
-                                    <input class="en-input" type="date" name="seminar_datum" id="seminar_datum" required>
-                                </div>
-                            </div>
-
-                            <!-- Date Selection: Start and End dates for Mehrtägiges Seminar -->
-                            <div id="date_range_section" class="en-griditem" style="display: none;">
-                                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                                    <label class="en-format-small" for="seminar_start">Von</label>
-                                    <input class="en-input" type="date" name="seminar_start" id="seminar_start">
-                                </div>
-                                <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                                    <label class="en-format-small" for="seminar_ende">Bis</label>
-                                    <input class="en-input" type="date" name="seminar_ende" id="seminar_ende">
-                                </div>
-                            </div>
 
                             <!-- 1-Tages-Seminar Package Display -->
-                            <div id="package_1tag" class="en-griditem en-space-large">
+                            <div id="package_1tag" class="en-griditem">
                                 <div class="en-format-small" style="padding: 1.5em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
-                                    <h4 class="en-format-h5" style="margin-bottom: 1em;">1-Tages-Seminar Paket <span style="color: #bdadad;">(€ 77,00 pro Person)</span></h4>
+                                    <h4 class="en-format-h5" style="margin-bottom: 1em;">1-Tages-Seminar Paket <span style="color: #bdadad;">(€ 72,00 pro Person + € 150,00 Tagespauschale)</span></h4>
                                     <p style="margin-bottom: 0.5em;"><strong>Leistungen (inkludiert):</strong></p>
                                     <ul style="margin-left: 1.5em; margin-bottom: 1em;">
-                                        <li>Empfang / Genusspause pikant & süß gemischt</li>
-                                        <li>Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet</li>
-                                        <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb</li>
+                                        <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie „Steirischem Hirnfutter"</li>
+                                        <li>Empfang/Pause mit steirischen Brötchen & süßen Häppchen</li>
+                                        <li>Mittagessen, 3-Gang Wahl Menü mit Salatbuffet</li>
                                     </ul>
                                 </div>
                             </div>
@@ -108,13 +112,22 @@
                             <div id="room_fields_section" class="en-griditem" style="display: none;">
                                 <h4 class="en-format-h5" style="margin-bottom: 1em;">Zimmer</h4>
                                 <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                                    <label class="en-format-small" for="zimmer_einzel">Einzelzimmer (€ 125,00 pro Nacht)</label>
+                                    <label class="en-format-small" for="zimmer_einzel">Einzelzimmer</label>
                                     <input class="en-input" type="number" name="zimmer_einzel" id="zimmer_einzel" min="0" value="0">
                                 </div>
 
                                 <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
-                                    <label class="en-format-small" for="zimmer_doppel">Doppelzimmer (€ 95,00 pro Person/Nacht)</label>
+                                    <label class="en-format-small" for="zimmer_doppel">Doppelzimmer</label>
                                     <input class="en-input" type="number" name="zimmer_doppel" id="zimmer_doppel" min="0" value="0">
+                                </div>
+
+                                <!-- Vorabendanreise -->
+                                <div class="en-griditem" style="margin-top: 1em;">
+                                    <label class="en-format-small" for="vorabendanreise">
+                                        <input type="checkbox" name="vorabendanreise" id="vorabendanreise">
+                                        Vorabendanreise
+                                    </label>
+                                    <p style="font-size: 0.8em; color: #666; margin-top: 0.4em; margin-left: 1.75rem;">Das oberhalb angegebene Datum bezieht sich immer auf die Seminardauer. Wenn Sie also hier ankreuzen, heißt das, dass Sie einen Tag vor dem angegebenen Datum anreisen.</p>
                                 </div>
                             </div>
 
@@ -187,8 +200,20 @@
                             <!-- Equipment Section -->
                             <div class="equipment-section">
                                 <h2>Dürfen wir eine zusätzliche Ausstattung für Sie vorbereiten?</h2>
-                                <p style="font-size: 14px; color: #666; margin-bottom: 12px;"><strong>In der Pauschale für Sie inkludiert:</strong> WLAN, Beamer, Leinwand, 2 Flipcharts mit Papier und Stiften, Magnetwände, 1 Pinnwand, Moderationskoffer, Kugelschreiber & Block</p>
-                                <p style="font-size: 14px; color: #666; margin-bottom: 16px; font-weight: 600;">Zusatzausstattung:</p>
+                                <div class="equipment-included">
+                                    <strong>In der Pauschale für Sie inkludiert:</strong>
+                                    <ul style="margin-top: 0.5em; margin-left: 1.5em;">
+                                        <li>WLAN</li>
+                                        <li>Beamer</li>
+                                        <li>Leinwand</li>
+                                        <li>2 Flipcharts mit Papier und Stiften</li>
+                                        <li>Magnetwände</li>
+                                        <li>1 Pinnwand</li>
+                                        <li>Moderationskoffer</li>
+                                        <li>Kugelschreiber & Block</li>
+                                    </ul>
+                                </div>
+                                <p class="equipment-zusatz-label">Zusatzausstattung:</p>
                                 <div class="equipment-list">
                                     <span class="equipment-item">Flipchart € 10,00 pro Stück/Tag</span>
                                     <input type="number" class="equipment-input" name="equipment_flipcharts" value="0" min="0">
@@ -202,7 +227,7 @@
                                     <span class="equipment-item">Funkmikrofon € 30,00 pro Tag</span>
                                     <input type="number" class="equipment-input" name="equipment_funkmikrofon" value="0" min="0">
 
-                                    <span class="equipment-item">Presenter € 9,00 pro Tag</span>
+                                    <span class="equipment-item">Presenter (gratis)</span>
                                     <input type="number" class="equipment-input" name="equipment_presenter" value="0" min="0">
 
                                     <span class="equipment-item">Laptop € 30,00 pro Tag</span>
@@ -225,32 +250,33 @@
                                 <div class="package-info-card">
                                     <h4 class="package-title">GENUSS</h4>
                                     <ul class="package-features">
-                                        <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb & Seminarraumnutzung</li>
-                                        <li>Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet</li>
-                                        <li>4-Gang Wahlmenü inklusive Salat und Käse vom Buffet</li>
+                                        <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie „Steirischem Hirnfutter"</li>
+                                        <li>Pause mit pikanten Häppchen oder süßen Köstlichkeiten</li>
+                                        <li>Mittagessen, 3-Gang Wahl Menü mit Salatbuffet</li>
                                     </ul>
                                     <div class="package-price">
-                                        <span class="price-netto">Netto € 52,58</span>
-                                        <span class="price-brutto">Brutto € 60,00 pro Person/Tag</span>
+                                        <span class="price-netto">Netto € 61,67</span>
+                                        <span class="price-brutto">Brutto € 70,00 pro Person/Tag</span>
                                     </div>
                                 </div>
                                 <div class="package-info-card">
                                     <h4 class="package-title">HOCHGENUSS</h4>
                                     <ul class="package-features">
-                                        <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb & Seminarraumnutzung</li>
-                                        <li>Vormittag-Genusspause pikant</li>
-                                        <li>Mittagessen, 3-Gang-Wahl-Menü plus Salatbuffet inkl. alkoholfreiem Tischbuffet zum Mittagessen</li>
-                                        <li>4-Gang Wahlmenü inklusive Salat und Käse vom Buffet</li>
+                                        <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie „Steirischem Hirnfutter"</li>
+                                        <li>Pause mit steirischen Brötchen & pikanten Häppchen</li>
+                                        <li>Mittagessen, 3-Gang Wahl Menü mit Salatbuffet</li>
+                                        <li>Pause mit hausgemachtem Kuchen und Mehlspeisen</li>
+                                        <li>5-Gang Abendmenü „Heimische Genüsse" mit Salatbuffet</li>
                                     </ul>
                                     <div class="package-price">
-                                        <span class="price-netto">Netto € 68,86</span>
-                                        <span class="price-brutto">Brutto € 77,00 pro Person/Tag</span>
+                                        <span class="price-netto">Netto € 112,58</span>
+                                        <span class="price-brutto">Brutto € 126,00 pro Person/Tag</span>
                                     </div>
                                 </div>
                                 <div class="package-info-card package-info-card--saftbar">
                                     <h4 class="package-title">NUR SAFTBAR</h4>
                                     <ul class="package-features">
-                                        <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie Obstkorb & Seminarraumnutzung</li>
+                                        <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie „Steirischem Hirnfutter"</li>
                                     </ul>
                                     <div class="package-price">
                                         <span class="price-netto">Netto € 22,81</span>

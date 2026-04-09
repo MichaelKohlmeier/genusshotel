@@ -205,7 +205,8 @@
     function getDefaultPrices() {
         return {
             "1tag": {
-                "base_price": 77.00
+                "base_price": 72.00,
+                "daily_room_fee": 150.00
             },
             "catering": {
                 "saftbar": 26.00,
@@ -216,8 +217,8 @@
                 "mittagessen_getraenke": 5.00,
                 "abendessen_base": 52.00,
                 "abendessen_steak": 45.00,
-                "genuss_package": 60.00,
-                "hochgenuss_package": 77.00
+                "genuss_package": 70.00,
+                "hochgenuss_package": 126.00
             },
             "rooms": {
                 "single_per_night": 125.00,
@@ -231,7 +232,7 @@
                 "pinnwand": 10.00,
                 "displayboard": 85.00,
                 "funkmikrofon": 30.00,
-                "presenter": 9.00,
+                "presenter": 0.00,
                 "laptop": 30.00
             },
             "activities": {

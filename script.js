@@ -271,7 +271,11 @@
         const is1Tag = seminarTyp1Tag && seminarTyp1Tag.checked;
         const personenanzahl = parseInt(personenanzahlInput?.value) || 0;
         const tage = calculateDaysFromDates();
-        const naechte = Math.max(0, tage - 1); // Nächte = Tage - 1
+        const vorabendanreiseChecked = document.getElementById('vorabendanreise')?.checked || false;
+        let naechte = Math.max(0, tage - 1); // Nächte = Tage - 1
+        if (vorabendanreiseChecked && !is1Tag) {
+            naechte += 1; // Extra night for early arrival, no seminar room charge
+        }
 
         // Track costs by VAT rate (all prices are BRUTTO including VAT)
         let brutto10 = 0; // 10% VAT: accommodation, catering
@@ -307,10 +311,11 @@
         brutto20 += equipmentTotal;
         breakdown.ausstattung += equipmentTotal;
 
-        // 1-Tages-Seminar: Fixed price (10% VAT) + equipment
+        // 1-Tages-Seminar: Per-person price + daily flat rate (10% VAT) + equipment
         if (is1Tag) {
             const basePrice = window.Pricelist.getPrice('1tag.base_price');
-            const seminarpaketTotal = basePrice * personenanzahl;
+            const dailyRoomFee = window.Pricelist.getPrice('1tag.daily_room_fee') || 150;
+            const seminarpaketTotal = (basePrice * personenanzahl) + dailyRoomFee;
             brutto10 = seminarpaketTotal;
             breakdown.seminarpaket = seminarpaketTotal;
 
@@ -764,6 +769,12 @@
             input.addEventListener('change', updatePriceDisplay);
         });
 
+        // Vorabendanreise checkbox for price calculation
+        const vorabendanreiseCheckbox = document.getElementById('vorabendanreise');
+        if (vorabendanreiseCheckbox) {
+            vorabendanreiseCheckbox.addEventListener('change', updatePriceDisplay);
+        }
+
         // Initial price calculation
         updatePriceDisplay();
 
@@ -830,6 +841,7 @@
             // Rooms (only for multi-day)
             zimmer_einzel: document.getElementById('zimmer_einzel')?.value || '0',
             zimmer_doppel: document.getElementById('zimmer_doppel')?.value || '0',
+            vorabendanreise: document.getElementById('vorabendanreise')?.checked ? 'Ja' : 'Nein',
 
             // Room setup
             sitzordnung: document.querySelector('input[name="room_setup"]:checked')?.value || '',
