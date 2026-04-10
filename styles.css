@@ -1075,20 +1075,24 @@ input[type="range"]::-moz-range-thumb {
    TAB NAVIGATION
    ============================================ */
 
-/* Seminar type header - connects to tabs below */
+/* Seminar type header - separated from tabs below */
 .seminar-type-header {
-    margin-bottom: 0;
-    border-bottom: none;
-    border-radius: 0.5rem 0.5rem 0 0;
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
 }
 
 .tab-navigation {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid #e0ddd8;
-    padding-bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f8f7f5;
+    border: 1px solid #e0ddd8;
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 0.75rem 0.75rem 0;
+    margin-bottom: 0;
 }
 
 .tab-button {
@@ -1120,6 +1124,13 @@ input[type="range"]::-moz-range-thumb {
 
 .tab-contents {
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #e0ddd8;
+    border-top: 2px solid #e7d0cb;
+    border-radius: 0 0 0.5rem 0.5rem;
+    background-color: #f8f7f5;
+    margin-bottom: 2rem;
 }
 
 .tab-content {
@@ -1128,6 +1139,14 @@ input[type="range"]::-moz-range-thumb {
 
 .tab-content.active {
     display: block;
+}
+
+/* Form sections inside tabs: no double border/background */
+.tab-content .form-section {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
 }
 
 /* Tablet and smaller screens */
@@ -1140,6 +1159,14 @@ input[type="range"]::-moz-range-thumb {
         border-radius: 0.5rem;
         overflow: hidden;
         border: 1px solid #e0ddd8;
+        padding: 0;
+    }
+
+    .tab-contents {
+        border-top: 1px solid #e0ddd8;
+        border-radius: 0.5rem;
+        margin-top: 0.75rem;
+        margin-bottom: 1.5rem;
     }
 
     .tab-button {
