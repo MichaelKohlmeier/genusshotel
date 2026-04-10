@@ -42,12 +42,15 @@
                 <div class="form-section form-section--basic seminar-type-header">
                     <h3 class="en-griditem en-format-h5">Seminar-Typ</h3>
 
-                    <div class="en-griditem">
-                        <input class="en-replace" type="radio" name="seminar_typ" id="seminar_1tag" value="1tag" required checked>
-                        <label class="en-replacement en-replacement--radio en-format-small" for="seminar_1tag">1-Tages-Seminar</label>
-
-                        <input class="en-replace" type="radio" name="seminar_typ" id="seminar_mehrtag" value="mehrtag" required>
-                        <label class="en-replacement en-replacement--radio en-format-small" for="seminar_mehrtag">Mehrtägiges Seminar</label>
+                    <div class="en-griditem radio-group-horizontal">
+                        <span class="radio-option">
+                            <input class="en-replace" type="radio" name="seminar_typ" id="seminar_1tag" value="1tag" required checked>
+                            <label class="en-replacement en-replacement--radio en-format-small" for="seminar_1tag">1-Tages-Seminar</label>
+                        </span>
+                        <span class="radio-option">
+                            <input class="en-replace" type="radio" name="seminar_typ" id="seminar_mehrtag" value="mehrtag" required>
+                            <label class="en-replacement en-replacement--radio en-format-small" for="seminar_mehrtag">Mehrtägiges Seminar</label>
+                        </span>
                     </div>
 
                     <!-- Date Selection: Single date for 1-Tages-Seminar -->
@@ -373,12 +376,15 @@
                 <div class="form-section form-section--contact">
                     <h3 class="en-griditem en-format-h5 en-space-large">Ihre Kontaktdaten</h3>
 
-                    <div class="en-griditem">
-                        <input class="en-replace" type="radio" name="anrede" id="anrede_frau" value="Frau" required>
-                        <label class="en-replacement en-replacement--radio en-format-small" for="anrede_frau">Frau</label>
-
-                        <input class="en-replace" type="radio" name="anrede" id="anrede_herr" value="Herr" required>
-                        <label class="en-replacement en-replacement--radio en-format-small" for="anrede_herr">Herr</label>
+                    <div class="en-griditem radio-group-horizontal">
+                        <span class="radio-option">
+                            <input class="en-replace" type="radio" name="anrede" id="anrede_frau" value="Frau" required>
+                            <label class="en-replacement en-replacement--radio en-format-small" for="anrede_frau">Frau</label>
+                        </span>
+                        <span class="radio-option">
+                            <input class="en-replace" type="radio" name="anrede" id="anrede_herr" value="Herr" required>
+                            <label class="en-replacement en-replacement--radio en-format-small" for="anrede_herr">Herr</label>
+                        </span>
                     </div>
 
                     <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
