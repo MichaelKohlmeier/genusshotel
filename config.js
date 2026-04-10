@@ -10,7 +10,7 @@ window.SeminarFormConfig = {
 
     // Google Apps Script web app URL for form submission
     // TODO: Update this URL after deploying the Apps Script with doPost()
-    submissionUrl: 'https://script.google.com/macros/s/AKfycbyVeUkg3m7jP3Gfx-Spuw0bAyi9bRhYeuytgzCX0RI55zIj9-Zg41Nkw5vCghVL3WVe/exec',
+    submissionUrl: 'https://script.google.com/macros/s/AKfycbxYpw13i00Sa80OUGCfyCISQixTBNpNDeH8_MM0AYjRF_GjiCm6-XaflWoZMX8RmvM/exec',
 
     // Local fallback file (used if Apps Script fails)
     localPricesUrl: 'prices.json',

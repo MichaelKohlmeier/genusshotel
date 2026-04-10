@@ -97,7 +97,7 @@ var CONFIG = {
   TEMPLATE_DOC_ID: '1A_rGXvcHl_mSioXXz2lTWL_EBlf25bfXjUth9FwcfIw',
 
   // Email recipient for seminar inquiries
-  RECIPIENT_EMAIL: 'goelles.j@gmail.com',
+  RECIPIENT_EMAIL: 'goelles.j@gmail.com, Florian.Jaspers@genusshotel-riegersburg.at, michael.kohlmeier@gmx.at',
 
   // Email subject prefix
   EMAIL_SUBJECT_PREFIX: 'Neue Seminaranfrage'
