@@ -159,7 +159,9 @@
             var dateStr = formatDateGerman(currentDate);
             var isDeparture = (i === tage - 1 && tage > 1);
             var radioName = 'verpflegung_day_' + i;
+            // On departure day, hochgenuss is not available — fall back to genuss
             var prevValue = previousSelections[radioName] || 'genuss';
+            if (isDeparture && prevValue === 'hochgenuss') prevValue = 'genuss';
 
             html += '<div class="verpflegung-day">';
             html += '<div class="verpflegung-day-header">';
@@ -181,10 +183,12 @@
             html += '<span class="option-label">GENUSS</span>';
             html += '</label>';
 
-            html += '<label class="verpflegung-day-option">';
-            html += '<input type="radio" name="' + radioName + '" value="hochgenuss" data-price-key="catering.hochgenuss_package"' + (prevValue === 'hochgenuss' ? ' checked' : '') + '>';
-            html += '<span class="option-label">HOCHGENUSS</span>';
-            html += '</label>';
+            if (!isDeparture) {
+                html += '<label class="verpflegung-day-option">';
+                html += '<input type="radio" name="' + radioName + '" value="hochgenuss" data-price-key="catering.hochgenuss_package"' + (prevValue === 'hochgenuss' ? ' checked' : '') + '>';
+                html += '<span class="option-label">HOCHGENUSS</span>';
+                html += '</label>';
+            }
 
             html += '</div>';
             html += '</div>';
@@ -272,10 +276,7 @@
         const personenanzahl = parseInt(personenanzahlInput?.value) || 0;
         const tage = calculateDaysFromDates();
         const vorabendanreiseChecked = document.getElementById('vorabendanreise')?.checked || false;
-        let naechte = Math.max(0, tage - 1); // Nächte = Tage - 1
-        if (vorabendanreiseChecked && !is1Tag) {
-            naechte += 1; // Extra night for early arrival, no seminar room charge
-        }
+        const seminarNaechte = Math.max(0, tage - 1); // Seminar nights (Tage - 1)
 
         // Track costs by VAT rate (all prices are BRUTTO including VAT)
         let brutto10 = 0; // 10% VAT: accommodation, catering
@@ -351,24 +352,29 @@
         // Room costs (10% VAT)
         const zimmerEinzel = parseInt(document.getElementById('zimmer_einzel')?.value) || 0;
         const zimmerDoppel = parseInt(document.getElementById('zimmer_doppel')?.value) || 0;
-        let roomTotal = 0;
+        const vorabendEinzel = (vorabendanreiseChecked && !is1Tag) ? (parseInt(document.getElementById('vorabend_einzel')?.value) || 0) : 0;
+        const vorabendDoppel = (vorabendanreiseChecked && !is1Tag) ? (parseInt(document.getElementById('vorabend_doppel')?.value) || 0) : 0;
 
-        if (zimmerEinzel > 0) {
-            const singlePrice = window.Pricelist.getPrice('rooms.single_per_night');
-            roomTotal += singlePrice * zimmerEinzel * naechte;
-        }
-        if (zimmerDoppel > 0) {
-            // Double room price is per person
-            const doublePrice = window.Pricelist.getPrice('rooms.double_per_person');
-            roomTotal += doublePrice * zimmerDoppel * 2 * naechte; // *2 for 2 persons per double room
-        }
+        const singlePrice = window.Pricelist.getPrice('rooms.single_per_night');
+        const doublePrice = window.Pricelist.getPrice('rooms.double_per_person');
+
+        let roomTotal = 0;
+        // Seminar nights
+        roomTotal += singlePrice * zimmerEinzel * seminarNaechte;
+        roomTotal += doublePrice * zimmerDoppel * 2 * seminarNaechte;
+        // Vorabend night (only vorabend-specific rooms)
+        roomTotal += singlePrice * vorabendEinzel;
+        roomTotal += doublePrice * vorabendDoppel * 2;
+
         brutto10 += roomTotal;
         breakdown.naechtigungen = roomTotal;
 
         // Nächtigungsabgabe (no VAT - it's a local tax)
-        const totalPersonsStaying = zimmerEinzel + (zimmerDoppel * 2);
         const naechtigungsabgabeRate = window.Pricelist.getPrice('rooms.naechtigungsabgabe');
-        naechtigungsabgabeTotal = naechtigungsabgabeRate * totalPersonsStaying * naechte;
+        const totalPersonsSeminar = zimmerEinzel + (zimmerDoppel * 2);
+        const totalPersonsVorabend = vorabendEinzel + (vorabendDoppel * 2);
+        naechtigungsabgabeTotal = naechtigungsabgabeRate * totalPersonsSeminar * seminarNaechte;
+        naechtigungsabgabeTotal += naechtigungsabgabeRate * totalPersonsVorabend;
         breakdown.naechtigungsabgabe = naechtigungsabgabeTotal;
 
         // Equipment options (20% VAT)
@@ -769,11 +775,38 @@
             input.addEventListener('change', updatePriceDisplay);
         });
 
-        // Vorabendanreise checkbox for price calculation
+        // Vorabendanreise checkbox: show/hide sub-fields and sync max values
         const vorabendanreiseCheckbox = document.getElementById('vorabendanreise');
-        if (vorabendanreiseCheckbox) {
-            vorabendanreiseCheckbox.addEventListener('change', updatePriceDisplay);
+        const vorabendZimmerFields = document.getElementById('vorabend-zimmer-fields');
+        const vorabendEinzel = document.getElementById('vorabend_einzel');
+        const vorabendDoppel = document.getElementById('vorabend_doppel');
+
+        function updateVorabendZimmerMax() {
+            if (vorabendEinzel) vorabendEinzel.max = parseInt(document.getElementById('zimmer_einzel')?.value) || 0;
+            if (vorabendDoppel) vorabendDoppel.max = parseInt(document.getElementById('zimmer_doppel')?.value) || 0;
         }
+
+        if (vorabendanreiseCheckbox) {
+            vorabendanreiseCheckbox.addEventListener('change', function() {
+                if (vorabendZimmerFields) {
+                    vorabendZimmerFields.style.display = this.checked ? 'block' : 'none';
+                }
+                if (!this.checked) {
+                    if (vorabendEinzel) vorabendEinzel.value = 0;
+                    if (vorabendDoppel) vorabendDoppel.value = 0;
+                }
+                updateVorabendZimmerMax();
+                updatePriceDisplay();
+            });
+        }
+
+        // Keep vorabend max values in sync when main room inputs change
+        if (zimmerEinzel) zimmerEinzel.addEventListener('input', updateVorabendZimmerMax);
+        if (zimmerDoppel) zimmerDoppel.addEventListener('input', updateVorabendZimmerMax);
+
+        // Vorabend room inputs trigger price recalculation
+        if (vorabendEinzel) vorabendEinzel.addEventListener('input', updatePriceDisplay);
+        if (vorabendDoppel) vorabendDoppel.addEventListener('input', updatePriceDisplay);
 
         // Initial price calculation
         updatePriceDisplay();
@@ -842,6 +875,8 @@
             zimmer_einzel: document.getElementById('zimmer_einzel')?.value || '0',
             zimmer_doppel: document.getElementById('zimmer_doppel')?.value || '0',
             vorabendanreise: document.getElementById('vorabendanreise')?.checked ? 'Ja' : 'Nein',
+            vorabend_einzel: document.getElementById('vorabend_einzel')?.value || '0',
+            vorabend_doppel: document.getElementById('vorabend_doppel')?.value || '0',
 
             // Room setup
             sitzordnung: document.querySelector('input[name="room_setup"]:checked')?.value || '',

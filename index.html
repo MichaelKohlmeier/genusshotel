@@ -76,7 +76,7 @@
 
                 <!-- Tab Navigation - below seminar type selection -->
                 <div class="tab-navigation">
-                    <button type="button" class="tab-button active" data-tab="tab-seminar">Seminar-Typ</button>
+                    <button type="button" class="tab-button active" data-tab="tab-seminar">Personenanzahl</button>
                     <button type="button" class="tab-button" data-tab="tab-ausstattung">Sitzordnung & Ausstattung</button>
                     <button type="button" class="tab-button" data-tab="tab-verpflegung" id="tab-btn-verpflegung" style="display: none;">Verpflegung</button>
                     <button type="button" class="tab-button" data-tab="tab-rahmenprogramm" id="tab-btn-rahmenprogramm" style="display: none;">Rahmenprogramm</button>
@@ -131,6 +131,21 @@
                                         Vorabendanreise
                                     </label>
                                     <p style="font-size: 0.8em; color: #666; margin-top: 0.4em; margin-left: 1.75rem;">Das oberhalb angegebene Datum bezieht sich immer auf die Seminardauer. Wenn Sie also hier ankreuzen, heißt das, dass Sie einen Tag vor dem angegebenen Datum anreisen.</p>
+
+                                    <!-- Vorabend room fields, shown only when checkbox is checked -->
+                                    <div id="vorabend-zimmer-fields" style="display: none; margin-top: 1em; margin-left: 1.75rem;">
+                                        <p class="en-format-small" style="font-weight: 600; margin-bottom: 0.5em;">Zimmer für die Vornacht:</p>
+                                        <div style="display: flex; gap: 1em; flex-wrap: wrap;">
+                                            <div class="en-input-cnt">
+                                                <label class="en-format-small" for="vorabend_einzel">Einzelzimmer</label>
+                                                <input class="en-input" type="number" name="vorabend_einzel" id="vorabend_einzel" min="0" value="0">
+                                            </div>
+                                            <div class="en-input-cnt">
+                                                <label class="en-format-small" for="vorabend_doppel">Doppelzimmer</label>
+                                                <input class="en-input" type="number" name="vorabend_doppel" id="vorabend_doppel" min="0" value="0">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
