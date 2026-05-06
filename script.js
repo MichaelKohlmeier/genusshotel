@@ -28,6 +28,18 @@
     // Tab Elements
     const tabBtnVerpflegung = document.getElementById('tab-btn-verpflegung');
     const tabBtnRahmenprogramm = document.getElementById('tab-btn-rahmenprogramm');
+    const VERPFLEGUNG_LABELS = {
+        saftbar: 'Nur Saftbar',
+        genuss: 'Halbtagespauschale',
+        hochgenuss: 'Ganztagespauschale'
+    };
+
+    function setPersonenanzahlDisplayValue(value) {
+        if (!personenanzahlDisplay) {
+            return;
+        }
+        personenanzahlDisplay.value = value;
+    }
 
     /**
      * Switch to a specific tab
@@ -175,18 +187,18 @@
 
             html += '<label class="verpflegung-day-option">';
             html += '<input type="radio" name="' + radioName + '" value="saftbar" data-price-key="catering.saftbar"' + (prevValue === 'saftbar' ? ' checked' : '') + '>';
-            html += '<span class="option-label">Nur Saftbar</span>';
+            html += '<span class="option-label">' + VERPFLEGUNG_LABELS.saftbar + '</span>';
             html += '</label>';
 
             html += '<label class="verpflegung-day-option">';
             html += '<input type="radio" name="' + radioName + '" value="genuss" data-price-key="catering.genuss_package"' + (prevValue === 'genuss' ? ' checked' : '') + '>';
-            html += '<span class="option-label">GENUSS</span>';
+            html += '<span class="option-label">' + VERPFLEGUNG_LABELS.genuss + '</span>';
             html += '</label>';
 
             if (!isDeparture) {
                 html += '<label class="verpflegung-day-option">';
                 html += '<input type="radio" name="' + radioName + '" value="hochgenuss" data-price-key="catering.hochgenuss_package"' + (prevValue === 'hochgenuss' ? ' checked' : '') + '>';
-                html += '<span class="option-label">HOCHGENUSS</span>';
+                html += '<span class="option-label">' + VERPFLEGUNG_LABELS.hochgenuss + '</span>';
                 html += '</label>';
             }
 
@@ -454,9 +466,7 @@
         if (personenanzahlSlider) {
             personenanzahlSlider.value = totalPersons;
         }
-        if (personenanzahlDisplay) {
-            personenanzahlDisplay.textContent = totalPersons;
-        }
+        setPersonenanzahlDisplayValue(totalPersons);
 
         updateRoomAllocation();
         updatePriceDisplay();
@@ -543,7 +553,7 @@
 
                 // Equipment (both 1-Tag and Mehrtag)
                 if (breakdown.ausstattung > 0) {
-                    html += '<tr><td style="padding: 0.3em 0;">Zusatzausstattung</td><td style="padding: 0.3em 0; text-align: right;">€ ' + breakdown.ausstattung.toFixed(2) + '</td></tr>';
+                    html += '<tr><td style="padding: 0.3em 0;">Zusätzliche Ausstattung</td><td style="padding: 0.3em 0; text-align: right;">€ ' + breakdown.ausstattung.toFixed(2) + '</td></tr>';
                 }
 
                 // Activities (Mehrtag only)
@@ -577,14 +587,25 @@
      */
     function syncPersonenanzahl() {
         if (personenanzahlSlider && personenanzahlInput) {
-            const value = personenanzahlSlider.value;
+            const value = Math.max(0, Math.min(100, parseInt(personenanzahlSlider.value, 10) || 0));
+            personenanzahlSlider.value = value;
             personenanzahlInput.value = value;
-            if (personenanzahlDisplay) {
-                personenanzahlDisplay.textContent = value;
-            }
+            setPersonenanzahlDisplayValue(value);
             updateRoomAllocation();
             updatePriceDisplay(); // Update price when person count changes
         }
+    }
+
+    function syncPersonenanzahlFromInput() {
+        if (!personenanzahlDisplay || !personenanzahlSlider || !personenanzahlInput) {
+            return;
+        }
+        const value = Math.max(0, Math.min(100, parseInt(personenanzahlDisplay.value, 10) || 0));
+        personenanzahlDisplay.value = value;
+        personenanzahlSlider.value = value;
+        personenanzahlInput.value = value;
+        updateRoomAllocation();
+        updatePriceDisplay();
     }
 
     /**
@@ -711,6 +732,10 @@
             personenanzahlSlider.addEventListener('change', syncPersonenanzahl);
             updateRoomAllocation(); // Initial calculation
         }
+        if (personenanzahlDisplay) {
+            personenanzahlDisplay.addEventListener('input', syncPersonenanzahlFromInput);
+            personenanzahlDisplay.addEventListener('change', syncPersonenanzahlFromInput);
+        }
 
         // "Set all days" buttons for Verpflegung
         var setAllButtons = document.querySelectorAll('.btn-set-all');
@@ -813,7 +838,7 @@
 
         // Initialize slider display
         if (personenanzahlDisplay && personenanzahlSlider) {
-            personenanzahlDisplay.textContent = personenanzahlSlider.value;
+            personenanzahlDisplay.value = personenanzahlSlider.value;
         }
 
         // Form submission handler
@@ -832,7 +857,7 @@
 
         const tage = calculateDaysFromDates();
         var parts = [];
-        var packageNames = { saftbar: 'Nur Saftbar', genuss: 'GENUSS', hochgenuss: 'HOCHGENUSS' };
+        var packageNames = VERPFLEGUNG_LABELS;
 
         for (var i = 0; i < tage; i++) {
             var radio = document.querySelector('input[name="verpflegung_day_' + i + '"]:checked');
@@ -951,9 +976,9 @@
      * Show success message
      */
     function showSuccessMessage() {
-        const modal = document.getElementById('success-modal');
-        if (modal) {
-            modal.style.display = 'flex';
+        const successPanel = document.getElementById('form-success-panel');
+        if (successPanel) {
+            successPanel.style.display = 'block';
         }
     }
 
@@ -961,6 +986,7 @@
      * Show error message
      */
     function showErrorMessage(message) {
+        setSubmitUiState(false);
         const modal = document.getElementById('error-modal');
         const errorText = document.getElementById('error-message-text');
         if (modal) {
@@ -985,6 +1011,18 @@
 
     // Expose closeModal globally for onclick handlers
     window.closeModal = closeModal;
+
+    function setSubmitUiState(isSubmitting) {
+        const submitActions = document.getElementById('form-submit-actions');
+        const successPanel = document.getElementById('form-success-panel');
+
+        if (submitActions) {
+            submitActions.style.display = isSubmitting ? 'none' : '';
+        }
+        if (successPanel) {
+            successPanel.style.display = isSubmitting ? 'none' : successPanel.style.display;
+        }
+    }
 
     /**
      * Handle form submission
@@ -1012,6 +1050,8 @@
         // Collect form data
         const formData = collectFormData();
 
+        setSubmitUiState(true);
+
         // Show loading
         showLoadingOverlay();
 
@@ -1019,6 +1059,7 @@
         const submissionUrl = window.SeminarFormConfig?.submissionUrl;
         if (!submissionUrl) {
             hideLoadingOverlay();
+            setSubmitUiState(false);
             showErrorMessage('Konfigurationsfehler: Keine Submission-URL definiert.');
             return;
         }
@@ -1045,6 +1086,7 @@
         .catch(function(error) {
             console.error('Submission error:', error);
             hideLoadingOverlay();
+            setSubmitUiState(false);
             showErrorMessage('Fehler beim Senden der Anfrage. Bitte versuchen Sie es erneut.');
         });
     }

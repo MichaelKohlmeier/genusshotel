@@ -91,8 +91,8 @@
 
                             <!-- 1-Tages-Seminar Package Display -->
                             <div id="package_1tag" class="en-griditem">
-                                <div class="en-format-small" style="padding: 1.5em; background-color: #dddfd6; border-left: 4px solid #e7d0cb;">
-                                    <h4 class="en-format-h5" style="margin-bottom: 1em;">1-Tages-Seminar Paket <span style="color: #bdadad;">(€ 72,00 pro Person + € 150,00 Tagespauschale)</span></h4>
+                                <div class="en-format-small package-1tag-box">
+                                    <h4 class="en-format-h5 package-1tag-title">1-Tages-Seminar Paket <span class="package-1tag-subtitle">(Leistungen pro Person + Seminarraum-Pauschale/Raummiete pro Tag)</span></h4>
                                     <p style="margin-bottom: 0.5em;"><strong>Leistungen (inkludiert):</strong></p>
                                     <ul style="margin-left: 1.5em; margin-bottom: 1em;">
                                         <li>Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie „Steirischem Hirnfutter"</li>
@@ -107,7 +107,7 @@
                             <div class="en-input-cnt en-griditem slider-container" data-en-griditem-medium="2">
                                 <label class="en-format-small" for="personenanzahl">Personenanzahl</label>
                                 <input type="range" name="personenanzahl_slider" id="personenanzahl_slider" min="0" max="100" value="0" step="1">
-                                <div class="slider-value-display" id="personenanzahl_display">0</div>
+                                <input class="slider-value-display slider-value-input" type="number" id="personenanzahl_display" min="0" max="100" step="1" value="0" aria-label="Personenanzahl manuell eingeben">
                                 <input type="hidden" name="personenanzahl" id="personenanzahl" value="0">
                             </div>
 
@@ -151,7 +151,7 @@
 
                             <!-- Room Allocation Display -->
                             <div class="en-griditem en-space-large" id="room-allocation-display">
-                                <div class="en-format-small" style="padding: 1em; background-color: #dddfd6; border-radius: 0.25rem;">
+                                <div class="en-format-small room-allocation-inner">
                                     <strong>Vorgeschlagener Seminarraum:</strong> <span id="room-suggestion">Bitte Zimmer auswählen</span>
                                 </div>
                             </div>
@@ -217,7 +217,7 @@
 
                             <!-- Equipment Section -->
                             <div class="equipment-section">
-                                <h2>Dürfen wir eine zusätzliche Ausstattung für Sie vorbereiten?</h2>
+                                <h2>Zusätzliche Ausstattung</h2>
                                 <div class="equipment-included">
                                     <strong>In der Pauschale für Sie inkludiert:</strong>
                                     <ul style="margin-top: 0.5em; margin-left: 1.5em;">
@@ -231,7 +231,7 @@
                                         <li>Kugelschreiber & Block</li>
                                     </ul>
                                 </div>
-                                <p class="equipment-zusatz-label">Zusatzausstattung:</p>
+                                <p class="equipment-zusatz-label">Zusätzliche Ausstattung:</p>
                                 <div class="equipment-list">
                                     <span class="equipment-item">Flipchart € 10,00 pro Stück/Tag</span>
                                     <input type="number" class="equipment-input" name="equipment_flipcharts" value="0" min="0">
@@ -266,7 +266,7 @@
                             <!-- Package Info Cards -->
                             <div class="en-griditem package-info-cards">
                                 <div class="package-info-card">
-                                    <h4 class="package-title">GENUSS</h4>
+                                    <h4 class="package-title">Halbtagespauschale</h4>
                                     <ul class="package-features">
                                         <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie „Steirischem Hirnfutter"</li>
                                         <li>Pause mit pikanten Häppchen oder süßen Köstlichkeiten</li>
@@ -278,7 +278,7 @@
                                     </div>
                                 </div>
                                 <div class="package-info-card">
-                                    <h4 class="package-title">HOCHGENUSS</h4>
+                                    <h4 class="package-title">Ganztagespauschale</h4>
                                     <ul class="package-features">
                                         <li>Seminarraum inkl. Saftbar mit heimischen Säften, Mineralwasser, Kaffee/Tee sowie „Steirischem Hirnfutter"</li>
                                         <li>Pause mit steirischen Brötchen & pikanten Häppchen</li>
@@ -308,8 +308,8 @@
                                 <p class="en-format-small" style="margin-bottom: 0.5em; font-weight: 600;">Für alle Tage übernehmen:</p>
                                 <div class="verpflegung-set-all-buttons">
                                     <button type="button" class="btn-set-all" data-package="saftbar">Nur Saftbar</button>
-                                    <button type="button" class="btn-set-all" data-package="genuss">GENUSS</button>
-                                    <button type="button" class="btn-set-all" data-package="hochgenuss">HOCHGENUSS</button>
+                                    <button type="button" class="btn-set-all" data-package="genuss">Halbtagespauschale</button>
+                                    <button type="button" class="btn-set-all" data-package="hochgenuss">Ganztagespauschale</button>
                                 </div>
                             </div>
 
@@ -344,7 +344,7 @@
                             <div class="en-griditem">
                                 <label class="en-format-small" for="aktivitaet_wein">
                                     <input type="checkbox" name="aktivitaet_wein" id="aktivitaet_wein" data-price-key="activities.wein">
-                                    Weinverkostung <span style="color: #888;">(€ 35,00 pro Person)</span>
+                                    Weinverkostung im Haus <span style="color: #888;">(€ 35,00 pro Person)</span>
                                 </label>
                             </div>
 
@@ -429,13 +429,16 @@
 
                     <div class="en-input-cnt en-griditem" data-en-griditem-medium="2">
                         <label class="en-format-small" for="nachricht">Nachricht</label>
-                        <textarea class="en-input" name="nachricht" id="nachricht" rows="4"></textarea>
+                        <textarea class="en-input" name="nachricht" id="nachricht" rows="4" placeholder="Optional: Ihre Nachricht"></textarea>
                     </div>
 
-                    <p class="en-griditem en-format-tiny">* Pflichtfelder</p>
-
-                    <div class="en-griditem">
+                    <div id="form-submit-actions" class="en-griditem submit-actions">
+                        <p class="en-format-tiny">* Pflichtfelder</p>
                         <button type="submit" class="en-button en-button--filled">Anfrage senden</button>
+                    </div>
+
+                    <div id="form-success-panel" class="en-griditem submit-success-panel" role="status" aria-live="polite" style="display: none;">
+                        <strong>Vielen Dank!</strong> Ihre Seminaranfrage wurde gesendet. Wir melden uns in Kürze bei Ihnen.
                     </div>
                 </div>
             </div>
@@ -443,8 +446,8 @@
             <!-- Right Column: Price Summary (Sticky) -->
             <div class="form-column-right">
                 <div id="price-summary-section">
-                    <div class="en-format-small" style="padding: 1.5em; background-color: #f5f5f0; border: 2px solid #e7d0cb; border-radius: 0.5rem;">
-                        <h4 class="en-format-h5" style="margin-bottom: 1em;">Preisvorschlag</h4>
+                    <div class="en-format-small price-summary-card">
+                        <h4 class="en-format-h5 price-summary-title">Preisvorschlag</h4>
                         <div id="price-summary-content">
                             <p style="color: #666;">Bitte wählen Sie ein Datum aus, um den Preis zu berechnen.</p>
                         </div>
